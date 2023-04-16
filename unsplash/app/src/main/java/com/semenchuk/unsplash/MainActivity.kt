@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.semenchuk.unsplash.databinding.ActivityMainBinding
@@ -30,6 +29,8 @@ class MainActivity : AppCompatActivity() {
         val getPrefs = applicationContext.getSharedPreferences("appPrefs", Context.MODE_PRIVATE)
         val isFirstStart = getPrefs.getBoolean(FIRST_START, true)
 
+        addNavigation()
+
         if (isFirstStart) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, OnBoardingFragment())
@@ -37,9 +38,7 @@ class MainActivity : AppCompatActivity() {
 //            val e = getPrefs.edit()
 //            e.putBoolean(FIRST_START, false)
 //            e.apply()
-            binding.navView.visibility = ViewGroup.GONE
-        } else {
-            addNavigation()
+//            binding.navView.visibility = ViewGroup.GONE
         }
 
     }

@@ -3,17 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/teal_200"
     android:layout_height="match_parent">
 
-    <TextView
-        tools:text="@tools:sample/lorem"
-        android:id="@+id/onboard_tv"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/onBoardImage"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="30dp"
+        android:contentDescription="onBImg"
+        android:src="@drawable/onboard_img"
+        app:layout_constraintDimensionRatio="0.9:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/onboard_tv"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_margin="30dp"
+        android:gravity="top"
+        android:maxLines="4"
+        android:textSize="27sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:maxLines="4"
+        tools:text="@tools:sample/lorem/random" />
 </androidx.constraintlayout.widget.ConstraintLayout>
