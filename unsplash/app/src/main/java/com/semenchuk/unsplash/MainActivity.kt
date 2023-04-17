@@ -4,13 +4,13 @@ import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.semenchuk.unsplash.databinding.ActivityMainBinding
-import com.semenchuk.unsplash.ui.onBoarding.OnBoardingFragment
 
 
 const val FIRST_START = "FIRST_START"
@@ -25,26 +25,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val navController = addNavigation()
 
-        val getPrefs = applicationContext.getSharedPreferences("appPrefs", Context.MODE_PRIVATE)
-        val isFirstStart = getPrefs.getBoolean(FIRST_START, true)
-
-        addNavigation()
-
-        if (isFirstStart) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, OnBoardingFragment())
-                .commit()
-//            val e = getPrefs.edit()
-//            e.putBoolean(FIRST_START, false)
-//            e.apply()
-//            binding.navView.visibility = ViewGroup.GONE
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if(destination.id == R.id.onBoardingFragment || destination.id == R.id.splashFragment) {
+                binding.navView.visibility = ViewGroup.GONE
+            } else {
+                binding.navView.visibility = ViewGroup.VISIBLE
+            }
         }
-
     }
 
 
-    private fun addNavigation() {
+    private fun addNavigation(): NavController {
         val navView: BottomNavigationView = binding.navView
 
         val navHostFragment =
@@ -59,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 //        Disable ActionBar
 //        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        return navController
     }
 
     override fun onSupportNavigateUp(): Boolean {

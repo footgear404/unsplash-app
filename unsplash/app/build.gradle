@@ -55,4 +55,11 @@ dependencies {
 //    ViewPager
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
+//    Lottie
+    implementation 'com.airbnb.android:lottie:6.0.0'
+
+//    AppAuth
+    implementation 'net.openid:appauth:0.11.1'
+
+
 }
