@@ -1,24 +1,18 @@
 package com.semenchuk.unsplash.ui.onBoarding
 
 import android.os.Bundle
-import android.view.Gravity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams
-import android.view.animation.TranslateAnimation
-import android.widget.Button
-import android.widget.Gallery
-import android.widget.TextView
+import android.view.animation.AnimationUtils.loadAnimation
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.databinding.FragmentOnBoardingBinding
-import com.semenchuk.unsplash.ui.home.HomeFragment
 
 
 class OnBoardingFragment : Fragment() {
@@ -33,32 +27,44 @@ class OnBoardingFragment : Fragment() {
     ): View {
         _binding = FragmentOnBoardingBinding.inflate(inflater, container, false)
         return binding.root
-//        return inflater.inflate(R.layout.fragment_on_boarding, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.skipBtn.setOnClickListener {
-            findNavController().navigate(R.id.action_onBoardingFragment_to_homeFragment)
+            findNavController().navigate(R.id.action_onBoardingFragment_to_authorizationFragment)
         }
 
-        val list = listOf(
-            "Создавайте снимки, публикуйте, собирайте аудиторию, получайте фидбек!",
-            "Делитесь с друзьями, собирайте коллекции",
-            "Загружайте любимые снимки и отслеживайте статистику")
-
-        onboardItemCollectionAdapter = OnboardItemCollectionAdapter(this, list)
+        onboardItemCollectionAdapter = OnboardItemCollectionAdapter(this, LIST_STRING)
         viewPager = view.findViewById(R.id.pager)
         viewPager.adapter = onboardItemCollectionAdapter
 
 
         val tabLayout = binding.tabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-//            val tabText = list[position].split(" ")
-//            tab.text = tabText[0]
         }.attach()
+
+        viewPager.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+                    binding.btnBack.isVisible = position != 0
+                    binding.btnNext.isVisible = position != 2
+                    binding.skipBtn.isVisible = position == 2
+                }
+            })
+
+        binding.btnBack.setOnClickListener {
+            Log.d("TAG", "onViewCreated: ${viewPager.currentItem}")
+            viewPager.currentItem--
+        }
+        binding.btnNext.setOnClickListener {
+            val scale = loadAnimation(requireContext(), R.anim.pagination_anim);
+            binding.btnNext.startAnimation(scale)
+            Log.d("TAG", "onViewCreated: ${viewPager.currentItem}")
+            viewPager.currentItem++
+        }
     }
 
     override fun onDestroy() {
@@ -68,6 +74,11 @@ class OnBoardingFragment : Fragment() {
 
     companion object {
         const val ARG_OBJECT = "object"
+        val LIST_STRING = listOf(
+            "Создавайте снимки, публикуйте, собирайте аудиторию, получайте фидбек!",
+            "Делитесь с друзьями, собирайте коллекции",
+            "Загружайте любимые снимки и отслеживайте статистику"
+        )
     }
 }
 

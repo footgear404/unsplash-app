@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class SplashFragment : Fragment() {
 
-    private var isFirstStart: Boolean? = null
+    private var isAuthorized: Boolean? = null
     private var _getPrefs: SharedPreferences? = null
     private val getPrefs get() = _getPrefs!!
 
@@ -24,7 +24,7 @@ class SplashFragment : Fragment() {
             "appPrefs",
             Context.MODE_PRIVATE
         )
-        isFirstStart = getPrefs.getBoolean(FIRST_START, true)
+        isAuthorized = getPrefs.getBoolean(AUTH_STATUS, true)
     }
 
     override fun onCreateView(
@@ -40,14 +40,14 @@ class SplashFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             delay(1500)
             val e = getPrefs.edit()
-            if (isFirstStart!!) {
-                e.putBoolean(FIRST_START, false)
-                e.apply()
-                findNavController().navigate(R.id.action_splashFragment_to_onBoardingFragment)
-            } else {
-                e.putBoolean(FIRST_START, true)
+            if (isAuthorized == true) {
+                e.putBoolean(AUTH_STATUS, false)
                 e.apply()
                 findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+            } else {
+                e.putBoolean(AUTH_STATUS, false)
+                e.apply()
+                findNavController().navigate(R.id.action_splashFragment_to_onBoardingFragment)
             }
         }
     }
