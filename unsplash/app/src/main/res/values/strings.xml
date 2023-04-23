@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">UnSplash</string>
+    <string name="app_name">Unsplash</string>
     <string name="title_home">Home</string>
     <string name="title_favorite">Favorite</string>
     <string name="title_profile">Profile</string>
@@ -10,4 +10,16 @@
     <string name="you_must_login_now_text">You must login now</string>
     <string name="welcome_to_unsplash_text">Welcome to Unsplash</string>
     <string name="arrow_back">arrow back</string>
+
+    <string name="auth_canceled">Аутентификация не выполнена</string>
+    <string name="corrupt_access_token">Corrupt access token</string>
+    <string name="get_user_info">Get user info</string>
+    <string name="get_user_error">Get user error</string>
+
+    <string-array name="onBoardText">
+        <item>Create pictures, publish, gather an audience, get feedback!</item>
+        <item>Share with friends, collect collections</item>
+        <item>Upload your favorite pictures and track statistics</item>
+    </string-array>
+
 </resources>

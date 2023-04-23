@@ -1,60 +1,92 @@
 package com.semenchuk.unsplash.ui.auth
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.semenchuk.unsplash.R
+import com.semenchuk.unsplash.databinding.FragmentAuthorizationBinding
+import kotlinx.coroutines.launch
+import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationResponse
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AuthorizationFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AuthorizationFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private val viewModel: AuthViewModel by viewModels()
+    private var _binding: FragmentAuthorizationBinding? = null
+    private val binding get() = _binding!!
+
+
+    private val getAuthResponse =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            val dataIntent = it.data ?: return@registerForActivityResult
+            handleAuthResponseIntent(dataIntent)
         }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_authorization, container, false)
+    ): View {
+        _binding = FragmentAuthorizationBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AuthorizationFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AuthorizationFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val authBtn: Button = view.findViewById(R.id.btnAuth)
+
+        authBtn.setOnClickListener {
+            viewModel.openLoginPage()
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.loadingFlow.collect {
+                updateIsLoading(it)
             }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.openAuthPageFlow.collect {
+                openAuthPage(it)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.authSuccessFlow.collect {
+                findNavController().navigate(R.id.action_authorizationFragment_to_homeFragment)
+            }
+        }
+    }
+
+    private fun openAuthPage(intent: Intent) {
+        getAuthResponse.launch(intent)
+    }
+
+    private fun updateIsLoading(isLoading: Boolean) = with(binding) {
+        Log.d("TAG", "updateIsLoading: $isLoading")
+    }
+
+    private fun handleAuthResponseIntent(intent: Intent) {
+        // пытаемся получить ошибку из ответа. null - если все ок
+        val exception = AuthorizationException.fromIntent(intent)
+        // пытаемся получить запрос для обмена кода на токен, null - если произошла ошибка
+        val tokenExchangeRequest = AuthorizationResponse.fromIntent(intent)
+            ?.createTokenExchangeRequest()
+        when {
+            // авторизация завершались ошибкой
+            exception != null -> viewModel.onAuthCodeFailed(exception)
+            // авторизация прошла успешно, меняем код на токен
+            tokenExchangeRequest != null ->
+                viewModel.onAuthCodeReceived(tokenExchangeRequest)
+        }
     }
 }

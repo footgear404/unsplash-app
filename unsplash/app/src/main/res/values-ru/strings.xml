@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Unsplash</string>
+    <string name="title_home">Лента</string>
+    <string name="title_favorite">Избранное</string>
+    <string name="title_profile">Профиль</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="finish">Закрыть</string>
+    <string name="login_btn_text">Авторизация</string>
+    <string name="you_must_login_now_text">Вам нужно авторизоваться</string>
+    <string name="welcome_to_unsplash_text">Добро пожаловать в Unsplash</string>
+    <string name="arrow_back">Назад</string>
+
+    <string name="auth_canceled">Аутентификация не выполнена</string>
+    <string name="corrupt_access_token">Corrupt access token</string>
+    <string name="get_user_info">Get user info</string>
+    <string name="get_user_error">Get user error</string>
+
+    <string-array name="onBoardText">
+        <item>Создавайте снимки, публикуйте, собирайте аудиторию, получайте фидбек!</item>
+        <item>Делитесь с друзьями, собирайте коллекции</item>
+        <item>Загружайте любимые снимки и отслеживайте статистику</item>
+    </string-array>
+
+</resources>

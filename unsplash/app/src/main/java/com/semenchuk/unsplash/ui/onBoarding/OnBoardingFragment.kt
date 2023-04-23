@@ -36,7 +36,11 @@ class OnBoardingFragment : Fragment() {
             findNavController().navigate(R.id.action_onBoardingFragment_to_authorizationFragment)
         }
 
-        onboardItemCollectionAdapter = OnboardItemCollectionAdapter(this, LIST_STRING)
+        onboardItemCollectionAdapter = OnboardItemCollectionAdapter(
+            this, resources.getStringArray(
+                LIST_STRING
+            ).toList()
+        )
         viewPager = view.findViewById(R.id.pager)
         viewPager.adapter = onboardItemCollectionAdapter
 
@@ -56,13 +60,11 @@ class OnBoardingFragment : Fragment() {
             })
 
         binding.btnBack.setOnClickListener {
-            Log.d("TAG", "onViewCreated: ${viewPager.currentItem}")
             viewPager.currentItem--
         }
         binding.btnNext.setOnClickListener {
             val scale = loadAnimation(requireContext(), R.anim.pagination_anim);
             binding.btnNext.startAnimation(scale)
-            Log.d("TAG", "onViewCreated: ${viewPager.currentItem}")
             viewPager.currentItem++
         }
     }
@@ -74,11 +76,7 @@ class OnBoardingFragment : Fragment() {
 
     companion object {
         const val ARG_OBJECT = "object"
-        val LIST_STRING = listOf(
-            "Создавайте снимки, публикуйте, собирайте аудиторию, получайте фидбек!",
-            "Делитесь с друзьями, собирайте коллекции",
-            "Загружайте любимые снимки и отслеживайте статистику"
-        )
+        const val LIST_STRING = R.array.onBoardText
     }
 }
 

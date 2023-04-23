@@ -35,6 +35,7 @@
         tools:text="You must login now" />
 
     <Button
+        android:id="@+id/btnAuth"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_margin="40dp"
