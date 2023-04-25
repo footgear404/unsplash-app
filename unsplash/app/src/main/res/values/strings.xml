@@ -15,6 +15,7 @@
     <string name="corrupt_access_token">Corrupt access token</string>
     <string name="get_user_info">Get user info</string>
     <string name="get_user_error">Get user error</string>
+    <string name="unsplash_photo">unsplash photo</string>
 
     <string-array name="onBoardText">
         <item>Create pictures, publish, gather an audience, get feedback!</item>

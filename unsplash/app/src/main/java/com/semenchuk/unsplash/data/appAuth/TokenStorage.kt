@@ -1,4 +1,4 @@
-package com.semenchuk.unsplash.data.auth
+package com.semenchuk.unsplash.data.appAuth
 
 object TokenStorage {
     var access_token: String? = null

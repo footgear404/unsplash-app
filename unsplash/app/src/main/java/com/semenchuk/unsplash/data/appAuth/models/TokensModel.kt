@@ -1,4 +1,4 @@
-package com.semenchuk.unsplash.data.auth.models
+package com.semenchuk.unsplash.data.appAuth.models
 
 data class TokensModel (
     val access_token: String,

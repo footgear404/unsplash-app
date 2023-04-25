@@ -7,8 +7,8 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.semenchuk.unsplash.R
-import com.semenchuk.unsplash.data.auth.AuthRepository
-import com.semenchuk.unsplash.data.auth.models.TokensModel
+import com.semenchuk.unsplash.data.appAuth.AuthRepository
+import com.semenchuk.unsplash.data.appAuth.models.TokensModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.MutableStateFlow

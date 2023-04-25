@@ -1,7 +1,7 @@
-package com.semenchuk.unsplash.data.auth
+package com.semenchuk.unsplash.data.appAuth
 
 import android.util.Log
-import com.semenchuk.unsplash.data.auth.models.TokensModel
+import com.semenchuk.unsplash.data.appAuth.models.TokensModel
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.EndSessionRequest

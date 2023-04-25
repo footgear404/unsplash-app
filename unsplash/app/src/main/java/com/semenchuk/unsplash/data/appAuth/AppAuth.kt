@@ -1,9 +1,9 @@
-package com.semenchuk.unsplash.data.auth
+package com.semenchuk.unsplash.data.appAuth
 
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
-import com.semenchuk.unsplash.data.auth.models.TokensModel
+import com.semenchuk.unsplash.data.appAuth.models.TokensModel
 import net.openid.appauth.*
 import kotlin.coroutines.suspendCoroutine
 
@@ -87,7 +87,8 @@ object AppAuth {
         const val TOKEN_URI = "https://unsplash.com/oauth/token"
         const val END_SESSION_URI = "https://unsplash.com/logout"
         const val RESPONSE_TYPE = ResponseTypeValues.CODE
-        const val SCOPE = "public read_user"
+        const val SCOPE =
+            "public read_user write_user read_photos write_photos write_likes write_followers read_collections write_collections"
 
         const val CLIENT_ID = "qaKtejOGHbh1J4vsYULaVxQphZNW_HRUuW3hz7q9zmo"
         const val CLIENT_SECRET = "aq_C_wEqaOcrNwlx0AXVEkx3dn1dYtaMHpTqztaS-UE"
