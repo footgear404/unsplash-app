@@ -3,6 +3,7 @@ package com.semenchuk.unsplash
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ class SplashFragment : Fragment() {
             "appPrefs",
             Context.MODE_PRIVATE
         )
-        isAuthorized = getPrefs.getBoolean(AUTH_STATUS, true)
+        isAuthorized = getPrefs.getString(AUTH_STATUS, null) != null
     }
 
     override fun onCreateView(
@@ -36,17 +37,16 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        Log.d("TAG", "isAuthorized launch: $isAuthorized")
+
+        println(isAuthorized)
 
         viewLifecycleOwner.lifecycleScope.launch {
             delay(1500)
-            val e = getPrefs.edit()
             if (isAuthorized == true) {
-                e.putBoolean(AUTH_STATUS, false)
-                e.apply()
                 findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
             } else {
-                e.putBoolean(AUTH_STATUS, false)
-                e.apply()
                 findNavController().navigate(R.id.action_splashFragment_to_onBoardingFragment)
             }
         }

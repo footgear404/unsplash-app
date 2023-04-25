@@ -12,7 +12,7 @@
     <string name="arrow_back">Назад</string>
 
     <string name="auth_canceled">Аутентификация не выполнена</string>
-    <string name="corrupt_access_token">Corrupt access token</string>
+    <string name="corrupt_access_token">Поврежденный токен доступа</string>
     <string name="get_user_info">Get user info</string>
     <string name="get_user_error">Get user error</string>
 

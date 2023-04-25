@@ -5,10 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.favorite.FavoriteFragment">
+    tools:context=".ui.collections.CollectionsFragment">
 
     <TextView
-        android:text="FAVORITE"
+        android:text="COLLECTIONS"
         android:id="@+id/text_dashboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

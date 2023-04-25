@@ -28,16 +28,16 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_favoriteFragment"
-            app:destination="@id/favoriteFragment" />
+            app:destination="@id/collectionsFragment" />
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
     </fragment>
     <fragment
-        android:id="@+id/favoriteFragment"
-        android:name="com.semenchuk.unsplash.ui.favorite.FavoriteFragment"
+        android:id="@+id/collectionsFragment"
+        android:name="com.semenchuk.unsplash.ui.collections.CollectionsFragment"
         android:label="fragment_favorite"
-        tools:layout="@layout/fragment_favorite" />
+        tools:layout="@layout/fragment_collections" />
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.semenchuk.unsplash.ui.profile.ProfileFragment"

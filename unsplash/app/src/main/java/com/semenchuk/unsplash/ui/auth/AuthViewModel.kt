@@ -8,10 +8,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.data.auth.AuthRepository
-
+import com.semenchuk.unsplash.data.auth.models.TokensModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -27,18 +26,20 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     private val openAuthPageEventChannel = Channel<Intent>(Channel.BUFFERED)
     private val toastEventChannel = Channel<Int>(Channel.BUFFERED)
+    private val tokenChannel = Channel<TokensModel>(Channel.BUFFERED)
     private val authSuccessEventChannel = Channel<Unit>(Channel.BUFFERED)
 
     private val loadingMutableStateFlow = MutableStateFlow(false)
 
-    val openAuthPageFlow: Flow<Intent>
-        get() = openAuthPageEventChannel.receiveAsFlow()
+    val openAuthPageFlow get() = openAuthPageEventChannel.receiveAsFlow()
 
-    val loadingFlow: Flow<Boolean>
-        get() = loadingMutableStateFlow.asStateFlow()
+    val loadingFlow get() = loadingMutableStateFlow.asStateFlow()
 
-    val authSuccessFlow: Flow<Unit>
-        get() = authSuccessEventChannel.receiveAsFlow()
+    val authSuccessFlow get() = authSuccessEventChannel.receiveAsFlow()
+
+    val authToastFlow get() = toastEventChannel.receiveAsFlow()
+
+    val token get() = tokenChannel.receiveAsFlow()
 
     fun onAuthCodeFailed(exception: AuthorizationException) {
         toastEventChannel.trySendBlocking(R.string.auth_canceled)
@@ -46,15 +47,16 @@ class AuthViewModel(application: Application) : AndroidViewModel(application) {
 
     fun onAuthCodeReceived(tokenRequest: TokenRequest) {
 
-        Log.d("TAG", "trySendBlocking: open: ${tokenRequest}")
+        Log.d("TAG", "trySendBlocking: open: ${tokenRequest.authorizationCode}")
 
         viewModelScope.launch {
             loadingMutableStateFlow.value = true
             runCatching {
-                authRepository.performTokenRequest(
+                val token = authRepository.performTokenRequest(
                     authService = authService,
                     tokenRequest = tokenRequest
                 )
+                tokenChannel.send(token)
             }.onSuccess {
                 loadingMutableStateFlow.value = false
                 authSuccessEventChannel.send(Unit)

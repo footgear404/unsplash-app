@@ -11,7 +11,7 @@
     <string name="welcome_to_unsplash_text">Welcome to Unsplash</string>
     <string name="arrow_back">arrow back</string>
 
-    <string name="auth_canceled">Аутентификация не выполнена</string>
+    <string name="auth_canceled">Authentication failed</string>
     <string name="corrupt_access_token">Corrupt access token</string>
     <string name="get_user_info">Get user info</string>
     <string name="get_user_error">Get user error</string>

@@ -1,17 +1,15 @@
-package com.semenchuk.unsplash.ui.favorite
+package com.semenchuk.unsplash.ui.collections
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.semenchuk.unsplash.databinding.FragmentFavoriteBinding
+import com.semenchuk.unsplash.databinding.FragmentCollectionsBinding
 
-class FavoriteFragment : Fragment() {
+class CollectionsFragment : Fragment() {
 
-    private var _binding: FragmentFavoriteBinding? = null
+    private var _binding: FragmentCollectionsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -19,7 +17,7 @@ class FavoriteFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        _binding = FragmentCollectionsBinding.inflate(inflater, container, false)
         return binding.root
     }
 

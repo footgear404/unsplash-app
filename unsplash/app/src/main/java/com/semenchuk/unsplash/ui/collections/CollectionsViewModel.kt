@@ -1,10 +1,10 @@
-package com.semenchuk.unsplash.ui.favorite
+package com.semenchuk.unsplash.ui.collections
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class FavoriteViewModel : ViewModel() {
+class CollectionsViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is dashboard Fragment"
