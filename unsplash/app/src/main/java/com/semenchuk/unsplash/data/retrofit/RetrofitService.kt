@@ -1,5 +1,6 @@
 package com.semenchuk.unsplash.data.retrofit
 
+import com.semenchuk.unsplash.data.retrofit.photos.GetPhotos
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 

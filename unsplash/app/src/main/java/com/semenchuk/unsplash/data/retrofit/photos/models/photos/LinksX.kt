@@ -1,4 +1,4 @@
-package com.semenchuk.unsplash.data.retrofit.models
+package com.semenchuk.unsplash.data.retrofit.photos.models.photos
 
 
 import com.squareup.moshi.Json
