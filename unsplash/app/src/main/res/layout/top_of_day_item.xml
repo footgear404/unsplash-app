@@ -31,13 +31,15 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="2.5dp"
             android:layout_marginVertical="2.5dp"
+            android:background="@color/white"
             android:adjustViewBounds="true"
             android:contentDescription="@string/unsplash_photo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/today_in_top_text_id"
-            tools:background="@tools:sample/backgrounds/scenic" />
+            tools:background="@tools:sample/backgrounds/scenic"
+            />
 
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -50,7 +52,7 @@
             app:layout_constraintBottom_toBottomOf="@id/background_photo"
             app:layout_constraintLeft_toLeftOf="@id/background_photo"
             app:shapeAppearanceOverlay="@style/roundedImage"
-            app:strokeColor="@color/black_200"
+            app:strokeColor="@color/accent"
             app:strokeWidth="1dp"
             tools:src="@tools:sample/backgrounds/scenic" />
 
@@ -65,7 +67,7 @@
             android:shadowColor="@color/black_700"
             android:shadowDx="1"
             android:shadowDy="1"
-            android:shadowRadius="15"
+            android:shadowRadius="7"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -81,7 +83,7 @@
             android:shadowColor="@color/black_700"
             android:shadowDx="1"
             android:shadowDy="1"
-            android:shadowRadius="15"
+            android:shadowRadius="7"
             android:textColor="@color/white"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="@id/author_profile_img"
@@ -108,7 +110,7 @@
             android:shadowColor="@color/black_700"
             android:shadowDx="1"
             android:shadowDy="1"
-            android:shadowRadius="15"
+            android:shadowRadius="7"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/like"
             app:layout_constraintRight_toLeftOf="@id/like"
