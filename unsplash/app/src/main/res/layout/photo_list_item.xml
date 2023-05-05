@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="5dp">
+    android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/photo"
+        android:id="@+id/background_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="2.5dp"
+        android:layout_marginVertical="2.5dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/unsplash_photo"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,5 +18,82 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:background="@tools:sample/backgrounds/scenic" />
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/author_profile_img"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:contentDescription="@string/author_image_description"
+        android:padding="3dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/background_photo"
+        app:layout_constraintLeft_toLeftOf="@id/background_photo"
+        app:shapeAppearanceOverlay="@style/roundedImage"
+        app:strokeColor="@color/black_200"
+        app:strokeWidth="1dp"
+        tools:src="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:ellipsize="end"
+        android:maxLength="10"
+        android:maxLines="1"
+        android:shadowColor="@color/black_700"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="15"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/author_profile_img"
+        app:layout_constraintTop_toTopOf="@+id/author_profile_img"
+        tools:text="User Name" />
+
+    <TextView
+        android:id="@+id/nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:shadowColor="@color/black_700"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="15"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/author_profile_img"
+        app:layout_constraintStart_toStartOf="@+id/user_name"
+        tools:text="\@nickname" />
+
+    <ImageButton
+        android:id="@+id/like"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="@null"
+        android:contentDescription="@string/like_unlike"
+        android:foregroundGravity="center"
+        android:padding="10dp"
+        android:src="@drawable/like_selector"
+        app:layout_constraintBottom_toBottomOf="@id/author_profile_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/author_profile_img" />
+
+    <TextView
+        android:id="@+id/comments_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:shadowColor="@color/black_700"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="15"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/like"
+        app:layout_constraintRight_toLeftOf="@id/like"
+        app:layout_constraintTop_toTopOf="@id/like"
+        tools:text="99+" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

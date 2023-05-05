@@ -1,46 +1,122 @@
 package com.semenchuk.unsplash.ui.home.paged_adapter
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
-import com.semenchuk.unsplash.data.retrofit.photos.models.photos.UnsplashPhotosItem
+import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.databinding.PhotoListItemBinding
+import com.semenchuk.unsplash.databinding.TopOfDayItemBinding
+import com.semenchuk.unsplash.entities.PhotoItem
+
 
 class UnsplashPagedAdapter :
-    PagingDataAdapter<UnsplashPhotosItem, ViewHolder>(PhotosDiffUtilCallback()) {
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    PagingDataAdapter<PhotoItem, BaseViewHolder<Any>>(PhotosDiffUtilCallback()) {
+    override fun onBindViewHolder(holder: BaseViewHolder<Any>, position: Int) {
         val item = getItem(position)
-        val context = holder.binding.root.context
-        Glide.with(context).load(item?.urls?.thumb).into(holder.binding.photo)
+        holder.bind(item!!)
+
+        if (position == 0) {
+            val fullWidthItem =
+                holder.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
+            fullWidthItem.isFullSpan = true
+
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(
-            PhotoListItemBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) {
+            TOP_OF_DAY
+        } else {
+            PHOTO_LIST
+        }
+
+//        val itemType = getItem(position)
+//        return when (getItem(position)) {
+//            is UnsplashPhotosItem -> PHOTO_LIST
+//            is UnsplashTopItem -> TOP_OF_DAY
+//
+//            else -> {
+//                throw java.lang.IllegalStateException("ELSE in getItemViewType()")
+//            }
+//        }
+
+    }
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder<Any> {
+        Log.d("TAG", "onCreateViewHolder: $viewType")
+        return when (viewType) {
+            TOP_OF_DAY -> TopOfDayViewHolder(
+                TopOfDayItemBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
             )
-        )
+            PHOTO_LIST -> PhotoListViewHolder(
+                PhotoListItemBinding.inflate(
+                    LayoutInflater.from(parent.context), parent, false
+                )
+            )
+            else -> {
+                throw java.lang.IllegalStateException("ELSE in onCreateViewHolder()")
+            }
+        }
+    }
+
+    companion object {
+        const val TOP_OF_DAY: Int = R.layout.top_of_day_item
+        const val PHOTO_LIST: Int = R.layout.photo_list_item
     }
 }
 
-class ViewHolder(
-    val binding: PhotoListItemBinding
-) : RecyclerView.ViewHolder(binding.root)
+class PhotoListViewHolder(
+    private val binding: PhotoListItemBinding
+) : BaseViewHolder<Any>(binding) {
+    override fun bind(item: Any) {
+        val context = binding.root.context
+        item as PhotoItem
+        binding.userName.text = "${item.user?.firstName} ${item.user?.lastName ?: ""}"
+        binding.nickname.text = "@" + item.user?.username
+        binding.commentsCount.text = item.likes.toString()
+        Glide.with(context).load(item.urls?.regular).into(binding.backgroundPhoto)
+        Glide.with(context).load(item.user?.profileImage?.medium)
+            .into(binding.authorProfileImg)
+    }
+}
+
+class TopOfDayViewHolder(
+    private val binding: TopOfDayItemBinding
+) : BaseViewHolder<Any>(binding) {
+    override fun bind(item: Any) {
+        val context = binding.root.context
+        item as PhotoItem
+        binding.userName.text = "${item.user?.firstName} ${item.user?.lastName ?: ""}"
+        binding.nickname.text = "@" + item.user?.username
+        binding.commentsCount.text = item.likes.toString()
+        Glide.with(context).load(item.urls?.regular).into(binding.backgroundPhoto)
+        Glide.with(context).load(item.user?.profileImage?.medium)
+            .into(binding.authorProfileImg)
+    }
+}
 
 
-class PhotosDiffUtilCallback() : DiffUtil.ItemCallback<UnsplashPhotosItem>() {
+class PhotosDiffUtilCallback : DiffUtil.ItemCallback<PhotoItem>() {
     override fun areItemsTheSame(
-        oldItem: UnsplashPhotosItem,
-        newItem: UnsplashPhotosItem
+        oldItem: PhotoItem,
+        newItem: PhotoItem
     ): Boolean =
         oldItem.id == newItem.id
 
 
+    @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(
-        oldItem: UnsplashPhotosItem,
-        newItem: UnsplashPhotosItem
+        oldItem: PhotoItem,
+        newItem: PhotoItem
     ): Boolean = oldItem == newItem
 }

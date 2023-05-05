@@ -63,7 +63,7 @@ class OnBoardingFragment : Fragment() {
             viewPager.currentItem--
         }
         binding.btnNext.setOnClickListener {
-            val scale = loadAnimation(requireContext(), R.anim.pagination_anim);
+            val scale = loadAnimation(requireContext(), R.anim.pagination_anim)
             binding.btnNext.startAnimation(scale)
             viewPager.currentItem++
         }

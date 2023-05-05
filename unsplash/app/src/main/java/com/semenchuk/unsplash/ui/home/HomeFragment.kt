@@ -38,6 +38,7 @@ class HomeFragment : Fragment() {
 
         binding.recyclerView.adapter = pagedAdapter
 
+        var manager = binding.recyclerView.layoutManager
 
 //        viewLifecycleOwner.lifecycleScope.launch {
 //            viewModel.photos.collectLatest {

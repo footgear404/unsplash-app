@@ -9,6 +9,7 @@ import androidx.paging.cachedIn
 import com.semenchuk.unsplash.data.retrofit.photos.PhotosPagingSource
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.UnsplashPhotosItem
 import com.semenchuk.unsplash.domain.LoadPhotosUseCase
+import com.semenchuk.unsplash.entities.PhotoItem
 import kotlinx.coroutines.flow.Flow
 
 class HomeViewModel(
@@ -20,7 +21,7 @@ class HomeViewModel(
 //        loadPhotosUseCase.execute()
     }
 
-    val photos: Flow<PagingData<UnsplashPhotosItem>> = Pager(
+    val photos: Flow<PagingData<PhotoItem>> = Pager(
         config = PagingConfig(pageSize = 10),
         initialKey = null,
         pagingSourceFactory = { photosPagingSource }

@@ -1,13 +1,20 @@
 package com.semenchuk.unsplash
 
+import android.annotation.SuppressLint
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.internal.ContextUtils.getActivity
 import com.semenchuk.unsplash.databinding.ActivityMainBinding
 
 
@@ -17,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,7 +42,9 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id in hideNavBarList) {
                 binding.navView.visibility = ViewGroup.GONE
+                (getActivity(this) as AppCompatActivity?)!!.supportActionBar!!.hide()
             } else {
+                (getActivity(this) as AppCompatActivity?)!!.supportActionBar!!.show()
                 binding.navView.visibility = ViewGroup.VISIBLE
             }
         }
@@ -48,12 +58,14 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
 //        Disable ActionBar
-//        val appBarConfiguration = AppBarConfiguration(
-//            setOf(
-//                R.id.homeFragment, R.id.favoriteFragment, R.id.profileFragment
-//            )
-//        )
-//        setupActionBarWithNavController(navController, appBarConfiguration)
+
+
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.homeFragment, R.id.collectionsFragment, R.id.profileFragment
+            )
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
         navView.setupWithNavController(navController)
         return navController

@@ -16,6 +16,12 @@
     <string name="get_user_info">Get user info</string>
     <string name="get_user_error">Get user error</string>
     <string name="unsplash_photo">unsplash photo</string>
+    <string name="today_in_the_top">Сегодня в топе</string>
+    <string name="author_image_description">Изображение автора</string>
+    <string name="like_unlike">Нравится|Не Нравится кнопка</string>
+    <string name="feed">Лента</string>
+    <string name="collections">Коллекции</string>
+    <string name="profile">Профиль</string>
 
     <string-array name="onBoardText">
         <item>Создавайте снимки, публикуйте, собирайте аудиторию, получайте фидбек!</item>
