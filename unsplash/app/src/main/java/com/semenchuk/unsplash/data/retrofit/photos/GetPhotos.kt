@@ -11,7 +11,11 @@ interface GetPhotos {
     suspend fun send(
         @Header("Authorization") authHeader: String,
         @Query("page") page: Int,
-        @Query("per_page") per_page: Int,
+        @Query("per_page") per_page: Int = PAGE_SIZE,
         @Query("order_by") orderBy: String = "popular"
     ): Response<List<UnsplashPhotosItem>>
+
+    companion object {
+        const val PAGE_SIZE = 20
+    }
 }

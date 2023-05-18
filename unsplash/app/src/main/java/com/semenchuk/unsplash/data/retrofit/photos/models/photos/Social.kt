@@ -9,7 +9,7 @@ data class Social(
     @Json(name = "instagram_username")
     val instagramUsername: String?,
     @Json(name = "paypal_email")
-    val paypalEmail: Any?,
+    val paypalEmail: String?,
     @Json(name = "portfolio_url")
     val portfolioUrl: String?,
     @Json(name = "twitter_username")

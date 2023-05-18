@@ -15,10 +15,8 @@ data class UnsplashPhotosItem(
     override val color: String?,
     @Json(name = "created_at")
     override val createdAt: String?,
-    @Json(name = "current_user_collections")
-    override val currentUserCollections: List<Any>?,
     @Json(name = "description")
-    override val description: Any?,
+    override val description: String?,
     @Json(name = "height")
     override val height: Int?,
     @Json(name = "id")
@@ -27,14 +25,8 @@ data class UnsplashPhotosItem(
     override val likedByUser: Boolean?,
     @Json(name = "likes")
     override val likes: Int?,
-    @Json(name = "links")
-    override val links: Links?,
     @Json(name = "promoted_at")
     override val promotedAt: String?,
-    @Json(name = "sponsorship")
-    override val sponsorship: Sponsorship?,
-    @Json(name = "topic_submissions")
-    override val topicSubmissions: TopicSubmissions?,
     @Json(name = "updated_at")
     override val updatedAt: String?,
     @Json(name = "urls")
@@ -43,4 +35,4 @@ data class UnsplashPhotosItem(
     override val user: User?,
     @Json(name = "width")
     override val width: Int?
-): PhotoItem
+) : PhotoItem

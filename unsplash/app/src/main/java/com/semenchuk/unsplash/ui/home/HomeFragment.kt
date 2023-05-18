@@ -72,7 +72,6 @@ class HomeFragment : Fragment() {
                     searchView.onActionViewCollapsed()
                     return@setOnCloseListener true
                 }
-
                 searchView.setOnQueryTextListener(
                     object : SearchView.OnQueryTextListener {
                         override fun onQueryTextSubmit(query: String?): Boolean {
