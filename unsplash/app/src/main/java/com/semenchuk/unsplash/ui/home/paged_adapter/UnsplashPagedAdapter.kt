@@ -1,16 +1,23 @@
 package com.semenchuk.unsplash.ui.home.paged_adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.databinding.PhotoListItemBinding
 import com.semenchuk.unsplash.databinding.TopOfDayItemBinding
+
 import com.semenchuk.unsplash.entities.PhotoItem
 
 
@@ -51,7 +58,6 @@ class UnsplashPagedAdapter :
         parent: ViewGroup,
         viewType: Int
     ): BaseViewHolder<Any> {
-        Log.d("TAG", "onCreateViewHolder: $viewType")
         return when (viewType) {
             TOP_OF_DAY -> TopOfDayViewHolder(
                 TopOfDayItemBinding.inflate(
@@ -84,7 +90,33 @@ class PhotoListViewHolder(
         binding.userName.text = "${item.user?.firstName} ${item.user?.lastName ?: ""}"
         binding.nickname.text = "@" + item.user?.username
         binding.commentsCount.text = item.likes.toString()
-        Glide.with(context).load(item.urls?.regular).into(binding.backgroundPhoto)
+        Glide.with(context)
+            .load(item.urls?.regular)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.photoProgress.isVisible = false
+                    return false
+                }
+
+            })
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .error(R.drawable.baseline_error_24)
+            .into(binding.backgroundPhoto)
         Glide.with(context).load(item.user?.profileImage?.medium)
             .into(binding.authorProfileImg)
     }
@@ -99,7 +131,33 @@ class TopOfDayViewHolder(
         binding.userName.text = "${item.user?.firstName} ${item.user?.lastName ?: ""}"
         binding.nickname.text = "@" + item.user?.username
         binding.commentsCount.text = item.likes.toString()
-        Glide.with(context).load(item.urls?.regular).into(binding.backgroundPhoto)
+        Glide.with(context)
+            .load(item.urls?.regular)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.photoProgress.isVisible = false
+                    return false
+                }
+
+            })
+            .error(R.drawable.baseline_error_24)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(binding.backgroundPhoto)
         Glide.with(context).load(item.user?.profileImage?.medium)
             .into(binding.authorProfileImg)
     }

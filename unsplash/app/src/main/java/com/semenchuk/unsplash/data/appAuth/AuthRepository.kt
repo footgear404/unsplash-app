@@ -31,12 +31,12 @@ class AuthRepository {
         authService: AuthorizationService,
         tokenRequest: TokenRequest,
     ): TokensModel {
-        val tokens = AppAuth.performTokenRequestSuspend(authService, tokenRequest)
+        val token = AppAuth.performTokenRequestSuspend(authService, tokenRequest)
         //обмен кода на токен произошел успешно, сохраняем токены и завершаем авторизацию
-        TokenStorage.access_token = tokens.access_token
-        TokenStorage.token_type = tokens.token_type
-        TokenStorage.scope = tokens.scope
-        Log.d("TAG", "performTokenRequest: Tokens accepted: ${tokens.access_token}")
-        return tokens
+        TokenStorage.access_token = token.access_token
+        TokenStorage.token_type = token.token_type
+        TokenStorage.scope = token.scope
+        Log.d("TAG", "performTokenRequest: Tokens accepted: ${token.access_token}")
+        return token
     }
 }

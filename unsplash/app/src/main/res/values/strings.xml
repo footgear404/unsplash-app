@@ -22,6 +22,7 @@
     <string name="feed">Feed</string>
     <string name="collections">Collections</string>
     <string name="profile">Profile</string>
+    <string name="search">what are we looking for?</string>
 
     <string-array name="onBoardText">
         <item>Create pictures, publish, gather an audience, get feedback!</item>
