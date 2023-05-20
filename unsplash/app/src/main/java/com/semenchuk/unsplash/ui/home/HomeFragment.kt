@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.MenuHost
-import androidx.core.view.MenuItemCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -33,7 +33,6 @@ class HomeFragment : Fragment() {
     private val viewModel: HomeViewModel by viewModels { App.appComponent.homeViewModelFactory() }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -52,8 +51,6 @@ class HomeFragment : Fragment() {
 
         setupMenu()
 
-        var manager = binding.recyclerView.layoutManager
-
         viewModel.photos.onEach {
             pagedAdapter.submitData(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
@@ -67,37 +64,25 @@ class HomeFragment : Fragment() {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.app_bar_search_menu, menu)
                 val searchItem: MenuItem = menu.findItem(R.id.action_search)
-                val searchView = MenuItemCompat.getActionView(searchItem) as SearchView
-                searchView.setOnCloseListener {
-                    searchView.onActionViewCollapsed()
-                    return@setOnCloseListener true
-                }
-                searchView.setOnQueryTextListener(
-                    object : SearchView.OnQueryTextListener {
-                        override fun onQueryTextSubmit(query: String?): Boolean {
-                            Toast.makeText(context, query, Toast.LENGTH_SHORT).show()
-                            return false
-                        }
+                val searchView = searchItem.actionView as SearchView
 
-                        override fun onQueryTextChange(newText: String?): Boolean {
-                            return false
-                        }
-                    })
+                setSearchViewConfigs(searchView)
 
-                val searchPlate =
-                    searchView.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
-                searchPlate.hint = getString(R.string.search)
-                val searchPlateView: View =
-                    searchView.findViewById(androidx.appcompat.R.id.search_plate)
-                searchPlateView.setBackgroundColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        android.R.color.transparent
-                    )
-                )
+                enableOnBackPressedCallBack(set = true, searchView = searchView)
 
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                Log.d("TAG", "onMenuItemSelected: ")
+                return true
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun enableOnBackPressedCallBack(set: Boolean, searchView: SearchView) {
+        when (set) {
+            true -> {
                 val mainActivity = requireActivity()
-
                 mainActivity.onBackPressedDispatcher.addCallback(
                     viewLifecycleOwner,
                     object : OnBackPressedCallback(true) {
@@ -113,12 +98,52 @@ class HomeFragment : Fragment() {
                     }
                 )
             }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                Log.d("TAG", "onMenuItemSelected: ")
-                return true
+            false -> {
+                Log.d("TAG", "enableOnBackPressedCallBack: $set")
             }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        }
+    }
+
+    private fun setSearchViewConfigs(searchView: SearchView) {
+        val searchPlate =
+            searchView.findViewById(androidx.appcompat.R.id.search_src_text) as EditText
+        searchPlate.hint = getString(R.string.search)
+        val searchPlateView: View =
+            searchView.findViewById(androidx.appcompat.R.id.search_plate)
+        val searchButton = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_button)
+        val closeButton =
+            searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
+
+        closeButton.setColorFilter(R.color.black_500)
+
+        searchPlate.setHintTextColor(resources.getColor(R.color.black_500, context?.theme))
+        searchButton.setColorFilter(resources.getColor(R.color.black_500, context?.theme))
+        closeButton.setColorFilter(resources.getColor(R.color.black_500, context?.theme))
+
+
+        searchView.setOnCloseListener {
+            searchView.onActionViewCollapsed()
+            return@setOnCloseListener true
+        }
+
+        searchPlateView.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                android.R.color.transparent
+            )
+        )
+
+        searchView.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    Toast.makeText(context, query, Toast.LENGTH_SHORT).show()
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
     }
 
     override fun onDestroyView() {

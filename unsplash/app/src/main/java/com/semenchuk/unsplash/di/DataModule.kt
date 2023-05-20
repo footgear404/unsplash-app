@@ -6,7 +6,6 @@ import androidx.room.Room
 import com.semenchuk.unsplash.data.SavedPhotosRemoteMediator
 import com.semenchuk.unsplash.data.UnsplashRepository
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
-import com.semenchuk.unsplash.data.retrofit.photos.PhotosPagingSource
 import com.semenchuk.unsplash.data.room.RoomRepository
 import com.semenchuk.unsplash.data.room.UnsplashDatabase
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
@@ -17,11 +16,6 @@ import javax.inject.Singleton
 
 @Module
 class DataModule {
-    @Provides
-    fun providePhotosPagingSource(retrofitService: RetrofitService): PhotosPagingSource {
-        return PhotosPagingSource(retrofitService)
-    }
-
 
     @Provides
     @Singleton

@@ -22,7 +22,7 @@
     <string name="feed">Лента</string>
     <string name="collections">Коллекции</string>
     <string name="profile">Профиль</string>
-    <string name="search">Search</string>
+    <string name="search">что будем искать?</string>
 
     <string-array name="onBoardText">
         <item>Создавайте снимки, публикуйте, собирайте аудиторию, получайте фидбек!</item>

@@ -90,8 +90,11 @@ class PhotoListViewHolder(
         binding.userName.text = "${item.user?.firstName} ${item.user?.lastName ?: ""}"
         binding.nickname.text = "@" + item.user?.username
         binding.commentsCount.text = item.likes.toString()
+
         Glide.with(context)
             .load(item.urls?.regular)
+            .dontAnimate()
+            .placeholder(R.drawable.sample_img)
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
@@ -133,6 +136,8 @@ class TopOfDayViewHolder(
         binding.commentsCount.text = item.likes.toString()
         Glide.with(context)
             .load(item.urls?.regular)
+            .placeholder(R.drawable.sample_img)
+            .dontAnimate()
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
@@ -158,6 +163,7 @@ class TopOfDayViewHolder(
             .error(R.drawable.baseline_error_24)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(binding.backgroundPhoto)
+
         Glide.with(context).load(item.user?.profileImage?.medium)
             .into(binding.authorProfileImg)
     }

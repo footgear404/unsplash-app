@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.semenchuk.unsplash.data.retrofit.photos.PhotosPagingSource
 import com.semenchuk.unsplash.domain.LoadPhotosUseCase
 import com.semenchuk.unsplash.entities.PhotoItem
 import kotlinx.coroutines.flow.Flow
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.map
 
 class HomeViewModel(
     private val loadPhotosUseCase: LoadPhotosUseCase,
-    private val photosPagingSource: PhotosPagingSource
 ) : ViewModel() {
 
     private val _allPhotos = MutableStateFlow<PagingData<PhotoItem>?>(null)

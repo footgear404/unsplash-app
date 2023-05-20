@@ -8,8 +8,11 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        app:itemActiveIndicatorStyle="@style/Theme.Unsplash.Indicator"
         android:background="?android:attr/windowBackground"
+        app:itemIconTint="@color/bot_nav_color_selector"
+        app:itemPaddingBottom="0dp"
         app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
