@@ -18,7 +18,7 @@ interface UnsplashDatabaseDao {
 
     @Transaction
     suspend fun refresh(saved_photos: List<SavedPhotoEntity>) {
-        clear()
+//        clear()
         save(saved_photos)
     }
 }

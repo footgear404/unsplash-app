@@ -93,8 +93,8 @@ class PhotoListViewHolder(
 
         Glide.with(context)
             .load(item.urls?.regular)
-            .dontAnimate()
             .placeholder(R.drawable.sample_img)
+            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
@@ -119,8 +119,10 @@ class PhotoListViewHolder(
             })
             .transition(DrawableTransitionOptions.withCrossFade())
             .error(R.drawable.baseline_error_24)
+            .dontAnimate()
             .into(binding.backgroundPhoto)
-        Glide.with(context).load(item.user?.profileImage?.medium)
+
+        Glide.with(context).load(item.user?.profileImage?.small)
             .into(binding.authorProfileImg)
     }
 }
@@ -137,7 +139,7 @@ class TopOfDayViewHolder(
         Glide.with(context)
             .load(item.urls?.regular)
             .placeholder(R.drawable.sample_img)
-            .dontAnimate()
+            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(
                     e: GlideException?,
@@ -162,9 +164,10 @@ class TopOfDayViewHolder(
             })
             .error(R.drawable.baseline_error_24)
             .transition(DrawableTransitionOptions.withCrossFade())
+            .dontAnimate()
             .into(binding.backgroundPhoto)
 
-        Glide.with(context).load(item.user?.profileImage?.medium)
+        Glide.with(context).load(item.user?.profileImage?.small)
             .into(binding.authorProfileImg)
     }
 }

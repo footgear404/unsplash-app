@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.map
 import com.semenchuk.unsplash.domain.LoadPhotosUseCase
 import com.semenchuk.unsplash.entities.PhotoItem
 import kotlinx.coroutines.flow.Flow
@@ -21,9 +20,7 @@ class HomeViewModel(
 
     val photos: Flow<PagingData<PhotoItem>> =
         loadPhotosUseCase.getPagingSource().flow.map { pagingData ->
-            pagingData.map {
-                it as PhotoItem
-            }
+            pagingData as PagingData<PhotoItem>
         }.cachedIn(viewModelScope)
 
 }

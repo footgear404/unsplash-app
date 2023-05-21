@@ -10,7 +10,9 @@ class UnsplashRepository(
         config = PagingConfig(pageSize = 20),
         remoteMediator = savedPhotosRemoteMediator,
         initialKey = null,
-        pagingSourceFactory = { savedPhotosRemoteMediator.unsplashDatabaseDao.getPhotosPagingSource() }
+        pagingSourceFactory = {
+            savedPhotosRemoteMediator.unsplashDatabaseDao.getPhotosPagingSource()
+        }
     )
 
 }

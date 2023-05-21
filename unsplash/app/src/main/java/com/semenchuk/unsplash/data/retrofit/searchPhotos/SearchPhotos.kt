@@ -11,7 +11,7 @@ interface SearchPhotos {
     suspend fun send(
         @Header("Authorization") authHeader: String,
         @Query("page") page: Int,
-        @Query("per_page") per_page: Int,
+        @Query("per_page") per_page: Int = 20,
         @Query("order_by") orderBy: String = "latest"
     ): Response<List<UnsplashPhotosItem>>
 }
