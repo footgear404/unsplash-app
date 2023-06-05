@@ -1,8 +1,6 @@
 package com.semenchuk.unsplash.ui.auth
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.semenchuk.unsplash.AUTH_STATUS
+import com.semenchuk.unsplash.App
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.databinding.FragmentAuthorizationBinding
 import kotlinx.coroutines.launch
@@ -28,15 +27,12 @@ class AuthorizationFragment : Fragment() {
     private var _binding: FragmentAuthorizationBinding? = null
     private val binding get() = _binding!!
 
-    private var _getPrefs: SharedPreferences? = null
-    private val getPrefs get() = _getPrefs!!
+    //    private var _getPrefs: SharedPreferences? = null
+//    private val getPrefs get() = _getPrefs!!
+    private val sp = App.appComponent.sharedPrefs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _getPrefs = requireActivity().applicationContext.getSharedPreferences(
-            "appPrefs",
-            Context.MODE_PRIVATE
-        )
     }
 
 
@@ -57,7 +53,7 @@ class AuthorizationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val tokenSharedPrefs = getPrefs.edit()
+        val tokenSharedPrefs = sp.edit()
 
         val authBtn: Button = view.findViewById(R.id.btnAuth)
 

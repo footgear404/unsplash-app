@@ -5,6 +5,8 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import com.semenchuk.unsplash.AUTH_STATUS
+import com.semenchuk.unsplash.App
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
@@ -16,7 +18,9 @@ class SavedPhotosRemoteMediator(
     private val retrofitService: RetrofitService
 ) : RemoteMediator<Int, SavedPhotoEntity>() {
 
-    private var pageIndex = 1
+    private val sp = App.appComponent.sharedPrefs()
+
+    private var pageIndex = FIRST_PAGE
 
     var savedPhotos: List<SavedPhotoEntity>? = emptyList()
 
@@ -25,23 +29,19 @@ class SavedPhotosRemoteMediator(
         state: PagingState<Int, SavedPhotoEntity>
     ): MediatorResult {
         pageIndex =
-            getPageIndex(loadType)
-                ?: return MediatorResult.Success(endOfPaginationReached = true)
+            getPageIndex(loadType) ?: return MediatorResult.Success(endOfPaginationReached = true)
 
         val limit = state.config.pageSize
+
+        Log.d("TAG", "getPageIndex: $pageIndex")
+        Log.d("TAG", "limit: $limit")
 
         return try {
             savedPhotos = fetchPhotos(pageIndex)
 
             unsplashDatabaseDao.save(savedPhotos!!)
 
-//            if (loadType == LoadType.REFRESH) {
-//                unsplashDatabaseDao.refresh(savedPhotos!!)
-//            } else {
-//                unsplashDatabaseDao.save(savedPhotos!!)
-//            }
-            Log.d("TAG", "limit: ${savedPhotos!!.size}")
-            Log.d("TAG", "limit: ${savedPhotos!!.size < limit}")
+            Log.d("TAG", "size: ${savedPhotos!!.size}")
             MediatorResult.Success(endOfPaginationReached = savedPhotos!!.size < limit)
         } catch (e: Exception) {
             Log.d("TAG", "load: $e")
@@ -53,14 +53,15 @@ class SavedPhotosRemoteMediator(
         page: Int
     ): List<SavedPhotoEntity>? {
         val response = retrofitService.getPhotos.send(
-            authHeader = "Bearer N5_TpRGY647keBXA-Sc6FKkoqCt9J3KYyTl5leCO5z8",
-            page = page
+            authHeader = "Bearer ${sp.getString(AUTH_STATUS, null)}",
+            page = page,
+            per_page = PAGE_SIZE
         )
         return response.body()?.let { Mappers.toSavedPhotoEntity(it) }
     }
 
     private fun getPageIndex(loadType: LoadType): Int? {
-        Log.d("TAG", "getPageIndex: $pageIndex")
+        Log.d("TAG", "loadType: $loadType")
         pageIndex = when (loadType) {
             LoadType.REFRESH -> FIRST_PAGE
             LoadType.PREPEND -> return null
@@ -76,6 +77,7 @@ class SavedPhotosRemoteMediator(
 
     companion object {
         const val FIRST_PAGE = 1
+        const val PAGE_SIZE = 20
     }
 
 }

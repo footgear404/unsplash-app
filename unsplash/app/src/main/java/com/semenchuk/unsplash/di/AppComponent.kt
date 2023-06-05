@@ -1,6 +1,7 @@
 package com.semenchuk.unsplash.di
 
 import android.app.Application
+import android.content.SharedPreferences
 import com.semenchuk.unsplash.ui.home.HomeViewModelFactory
 import dagger.BindsInstance
 import dagger.Component
@@ -24,4 +25,6 @@ interface AppComponent {
     }
 
     fun homeViewModelFactory(): HomeViewModelFactory
+
+    fun sharedPrefs(): SharedPreferences
 }

@@ -1,6 +1,8 @@
 package com.semenchuk.unsplash.di
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.paging.ExperimentalPagingApi
 import androidx.room.Room
 import com.semenchuk.unsplash.data.SavedPhotosRemoteMediator
@@ -32,6 +34,14 @@ class DataModule {
             name = "app_db"
         ).build()
     }
+
+    @Provides
+    @Singleton
+    fun provideSharedPrefs(application: Application): SharedPreferences {
+        return application.applicationContext
+            .getSharedPreferences("appPrefs", Context.MODE_PRIVATE)
+    }
+
 
     @Provides
     @Singleton

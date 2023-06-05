@@ -8,7 +8,6 @@ class HomeViewModelFactory(
     private val loadPhotosUseCase: LoadPhotosUseCase
 ) :
     ViewModelProvider.Factory {
-
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return HomeViewModel(loadPhotosUseCase) as T
     }

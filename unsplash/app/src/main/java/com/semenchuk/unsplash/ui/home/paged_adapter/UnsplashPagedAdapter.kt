@@ -25,7 +25,9 @@ class UnsplashPagedAdapter :
     PagingDataAdapter<PhotoItem, BaseViewHolder<Any>>(PhotosDiffUtilCallback()) {
     override fun onBindViewHolder(holder: BaseViewHolder<Any>, position: Int) {
         val item = getItem(position)
-        holder.bind(item!!)
+        if (item != null) {
+            holder.bind(item)
+        }
 
         if (position == 0) {
             val fullWidthItem =

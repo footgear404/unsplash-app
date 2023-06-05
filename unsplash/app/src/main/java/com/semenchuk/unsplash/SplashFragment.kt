@@ -1,7 +1,5 @@
 package com.semenchuk.unsplash
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,16 +14,19 @@ import kotlinx.coroutines.launch
 class SplashFragment : Fragment() {
 
     private var isAuthorized: Boolean? = null
-    private var _getPrefs: SharedPreferences? = null
-    private val getPrefs get() = _getPrefs!!
+//    private var _getPrefs: SharedPreferences? = null
+//    private val getPrefs get() = _getPrefs!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _getPrefs = requireActivity().applicationContext.getSharedPreferences(
-            "appPrefs",
-            Context.MODE_PRIVATE
-        )
-        isAuthorized = getPrefs.getString(AUTH_STATUS, null) != null
+//        _getPrefs = requireActivity().applicationContext.getSharedPreferences(
+//            "appPrefs",
+//            Context.MODE_PRIVATE
+//        )
+//        isAuthorized = getPrefs.getString(AUTH_STATUS, null) != null
+
+        val sp = App.appComponent.sharedPrefs()
+        isAuthorized = sp.getString(AUTH_STATUS, null) != null
     }
 
     override fun onCreateView(
