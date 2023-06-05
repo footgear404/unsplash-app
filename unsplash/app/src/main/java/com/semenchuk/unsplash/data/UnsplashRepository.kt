@@ -15,4 +15,7 @@ class UnsplashRepository(
         }
     )
 
+    suspend fun reload() {
+        savedPhotosRemoteMediator.refresh()
+    }
 }

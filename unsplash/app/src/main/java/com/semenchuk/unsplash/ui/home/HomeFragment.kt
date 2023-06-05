@@ -51,6 +51,11 @@ class HomeFragment : Fragment() {
 
         setupMenu()
 
+        binding.swipeToRefresh.setOnRefreshListener {
+            viewModel.reloadPhotos()
+            binding.swipeToRefresh.isRefreshing = false
+        }
+
         viewModel.photos.onEach {
             pagedAdapter.submitData(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)

@@ -10,7 +10,7 @@ interface UnsplashDatabaseDao {
     @Query("SELECT * FROM saved_photo")
     fun getPhotosPagingSource(): PagingSource<Int, SavedPhotoEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun save(saved_photos: List<SavedPhotoEntity>)
 
     @Query("DELETE FROM saved_photo")
@@ -18,7 +18,7 @@ interface UnsplashDatabaseDao {
 
     @Transaction
     suspend fun refresh(saved_photos: List<SavedPhotoEntity>) {
-//        clear()
+        clear()
         save(saved_photos)
     }
 }

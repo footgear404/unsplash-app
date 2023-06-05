@@ -12,7 +12,7 @@ object AppAuth {
     private val serviceConfiguration = AuthorizationServiceConfiguration(
         Uri.parse(AuthConfig.AUTH_URI),
         Uri.parse(AuthConfig.TOKEN_URI),
-        null, // registration endpoint
+        null,
         Uri.parse(AuthConfig.END_SESSION_URI)
     )
 

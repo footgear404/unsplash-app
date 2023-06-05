@@ -11,4 +11,8 @@ class LoadPhotosUseCase(
     fun getPagingSource(): Pager<Int, SavedPhotoEntity> {
         return unsplashRepository.pager
     }
+
+    suspend fun reloadPhotos(){
+        unsplashRepository.reload()
+    }
 }

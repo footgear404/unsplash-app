@@ -122,7 +122,7 @@ class PhotoListViewHolder(
             .dontAnimate()
             .into(binding.backgroundPhoto)
 
-        Glide.with(context).load(item.user?.profileImage?.small)
+        Glide.with(context).load(item.user?.profileImage?.medium)
             .into(binding.authorProfileImg)
     }
 }
@@ -167,7 +167,7 @@ class TopOfDayViewHolder(
             .dontAnimate()
             .into(binding.backgroundPhoto)
 
-        Glide.with(context).load(item.user?.profileImage?.small)
+        Glide.with(context).load(item.user?.profileImage?.medium)
             .into(binding.authorProfileImg)
     }
 }

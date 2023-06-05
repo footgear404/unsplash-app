@@ -7,20 +7,21 @@ import androidx.paging.cachedIn
 import com.semenchuk.unsplash.domain.LoadPhotosUseCase
 import com.semenchuk.unsplash.entities.PhotoItem
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val loadPhotosUseCase: LoadPhotosUseCase,
 ) : ViewModel() {
 
-    private val _allPhotos = MutableStateFlow<PagingData<PhotoItem>?>(null)
-    val allPhotos get() = _allPhotos.asStateFlow()
-
-    val photos: Flow<PagingData<PhotoItem>> =
+    var photos: Flow<PagingData<PhotoItem>> =
         loadPhotosUseCase.getPagingSource().flow.map { pagingData ->
             pagingData as PagingData<PhotoItem>
         }.cachedIn(viewModelScope)
 
+    fun reloadPhotos() {
+        viewModelScope.launch {
+            loadPhotosUseCase.reloadPhotos()
+        }
+    }
 }
