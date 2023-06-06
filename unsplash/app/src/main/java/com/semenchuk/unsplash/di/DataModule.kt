@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.paging.ExperimentalPagingApi
 import androidx.room.Room
-import com.semenchuk.unsplash.data.SavedPhotosRemoteMediator
 import com.semenchuk.unsplash.data.UnsplashRepository
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
 import com.semenchuk.unsplash.data.room.RoomRepository
@@ -55,20 +54,21 @@ class DataModule {
         return RoomRepository(database.appDatabaseDao())
     }
 
-    @OptIn(ExperimentalPagingApi::class)
-    @Provides
-    fun provideSavedPhotosRemoteMediator(
-        unsplashDatabaseDao: UnsplashDatabaseDao,
-        retrofitService: RetrofitService
-    ): SavedPhotosRemoteMediator {
-        return SavedPhotosRemoteMediator(unsplashDatabaseDao, retrofitService)
-    }
+//    @OptIn(ExperimentalPagingApi::class)
+//    @Provides
+//    fun provideSavedPhotosRemoteMediator(
+//        unsplashDatabaseDao: UnsplashDatabaseDao,
+//        retrofitService: RetrofitService
+//    ): SavedPhotosRemoteMediator {
+//        return SavedPhotosRemoteMediator(unsplashDatabaseDao, retrofitService)
+//    }
 
     @OptIn(ExperimentalPagingApi::class)
     @Provides
     fun provideUnsplashRepository(
-        savedPhotosRemoteMediator: SavedPhotosRemoteMediator
+        unsplashDatabaseDao: UnsplashDatabaseDao,
+        retrofitService: RetrofitService
     ): UnsplashRepository {
-        return UnsplashRepository(savedPhotosRemoteMediator)
+        return UnsplashRepository(unsplashDatabaseDao, retrofitService)
     }
 }

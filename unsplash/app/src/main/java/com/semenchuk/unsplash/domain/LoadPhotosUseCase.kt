@@ -8,11 +8,7 @@ class LoadPhotosUseCase(
     private val unsplashRepository: UnsplashRepository
 ) {
 
-    fun getPagingSource(): Pager<Int, SavedPhotoEntity> {
-        return unsplashRepository.pager
-    }
-
-    suspend fun reloadPhotos(){
-        unsplashRepository.reload()
+    fun getPhotos(query: String): Pager<Int, SavedPhotoEntity> {
+        return unsplashRepository.pagerForFeed(query)
     }
 }

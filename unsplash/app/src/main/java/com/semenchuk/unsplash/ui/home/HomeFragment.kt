@@ -15,12 +15,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.semenchuk.unsplash.App
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.databinding.FragmentHomeBinding
+import com.semenchuk.unsplash.domain.utils.State
+import com.semenchuk.unsplash.domain.utils.State.*
 import com.semenchuk.unsplash.ui.home.paged_adapter.UnsplashPagedAdapter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
 
@@ -28,7 +32,6 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val pagedAdapter = UnsplashPagedAdapter()
-
 
     private val viewModel: HomeViewModel by viewModels { App.appComponent.homeViewModelFactory() }
     override fun onCreateView(
@@ -48,13 +51,33 @@ class HomeFragment : Fragment() {
         setupMenu()
 
         binding.swipeToRefresh.setOnRefreshListener {
-            viewModel.reloadPhotos()
+            pagedAdapter.refresh()
             binding.swipeToRefresh.isRefreshing = false
         }
 
-        viewModel.photos.onEach {
-            pagedAdapter.submitData(it)
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.state.collect { state ->
+                Log.d("TAG", "state: $state")
+                when (state) {
+                    Loading -> {
+                        Snackbar.make(binding.recyclerView, "Загружаем фото", Snackbar.LENGTH_SHORT)
+                            .show()
+                    }
+                    Success -> {
+                        viewModel.photos?.onEach {
+                            pagedAdapter.submitData(it)
+                        }?.launchIn(viewLifecycleOwner.lifecycleScope)
+                    }
+                    is Error -> {
+                        Snackbar.make(binding.recyclerView, state.message, Snackbar.LENGTH_SHORT)
+                            .show()
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+        }
     }
 
 
@@ -137,6 +160,11 @@ class HomeFragment : Fragment() {
         searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
+                    viewModel.searchPhotos(query.toString())
+
+                    if (viewModel.state.value == State.Success) {
+                        pagedAdapter.refresh()
+                    }
                     Toast.makeText(context, query, Toast.LENGTH_SHORT).show()
                     return false
                 }

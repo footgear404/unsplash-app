@@ -9,7 +9,6 @@ import dagger.Provides
 @Module
 class UiModule {
 
-
     @Provides
     fun provideHomeViewModelFactory(
         loadPhotosUseCase: LoadPhotosUseCase,
@@ -23,5 +22,5 @@ class UiModule {
     ): HomeViewModel {
         return HomeViewModel(loadPhotosUseCase)
     }
-
 }
+
