@@ -6,7 +6,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import com.semenchuk.unsplash.AUTH_STATUS
-import com.semenchuk.unsplash.App
+import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity

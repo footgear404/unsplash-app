@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.semenchuk.unsplash.AUTH_STATUS
-import com.semenchuk.unsplash.App
+import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.databinding.FragmentAuthorizationBinding
 import kotlinx.coroutines.launch

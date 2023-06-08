@@ -1,4 +1,4 @@
-package com.semenchuk.unsplash
+package com.semenchuk.unsplash.ui.splash
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.semenchuk.unsplash.AUTH_STATUS
+import com.semenchuk.unsplash.app.App
+import com.semenchuk.unsplash.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

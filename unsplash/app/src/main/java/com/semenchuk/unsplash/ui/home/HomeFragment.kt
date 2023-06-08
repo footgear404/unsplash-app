@@ -18,7 +18,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
-import com.semenchuk.unsplash.App
+import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.databinding.FragmentHomeBinding
 import com.semenchuk.unsplash.domain.utils.State

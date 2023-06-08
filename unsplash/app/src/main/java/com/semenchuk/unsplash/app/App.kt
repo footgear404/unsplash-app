@@ -1,4 +1,4 @@
-package com.semenchuk.unsplash
+package com.semenchuk.unsplash.app
 
 import android.app.Application
 import com.semenchuk.unsplash.di.AppComponent
