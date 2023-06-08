@@ -1,5 +1,6 @@
 package com.semenchuk.unsplash.data
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -20,7 +21,7 @@ class SavedPhotosRemoteMediator(
 
     private val sp = App.appComponent.sharedPrefs()
 
-    private var pageIndex = FIRST_PAGE
+    private var pageIndex = 0
 
     var savedPhotos: List<SavedPhotoEntity>? = emptyList()
 
@@ -36,7 +37,7 @@ class SavedPhotosRemoteMediator(
 
         val limit = state.config.pageSize
 
-//        Log.d("TAG", "getPageIndex: $pageIndex")
+        Log.d("TAG", "getPageIndex: $pageIndex")
 //        Log.d("TAG", "limit: $limit")
 
         return try {
@@ -63,6 +64,7 @@ class SavedPhotosRemoteMediator(
     }
 
     private suspend fun fetchPhotos(page: Int, query: String): List<SavedPhotoEntity>? {
+        Log.d("TAG", "fetchPhotos(query): $query")
         if (query.isEmpty()) {
             val response = retrofitService.getPhotos.send(
                 authHeader = "Bearer ${sp.getString(AUTH_STATUS, null)}",
@@ -84,7 +86,7 @@ class SavedPhotosRemoteMediator(
     }
 
     private fun getPageIndex(loadType: LoadType): Int? {
-//        Log.d("TAG", "loadType: $loadType")
+        Log.d("TAG", "loadType: $loadType")
         pageIndex = when (loadType) {
             LoadType.REFRESH -> FIRST_PAGE
             LoadType.PREPEND -> return null

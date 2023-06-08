@@ -1,11 +1,13 @@
 package com.semenchuk.unsplash.ui.home
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
@@ -20,7 +22,6 @@ import com.semenchuk.unsplash.App
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.databinding.FragmentHomeBinding
 import com.semenchuk.unsplash.domain.utils.State
-import com.semenchuk.unsplash.domain.utils.State.*
 import com.semenchuk.unsplash.ui.home.paged_adapter.UnsplashPagedAdapter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -46,42 +47,57 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recyclerView.adapter = pagedAdapter
-
-        setupMenu()
+        setMenu()
+        setAdapter()
 
         binding.swipeToRefresh.setOnRefreshListener {
-            pagedAdapter.refresh()
-            binding.swipeToRefresh.isRefreshing = false
+            if (checkForInternet(requireContext())) {
+                viewModel.load()
+                pagedAdapter.refresh()
+                binding.swipeToRefresh.isRefreshing = false
+            } else {
+                viewModel.sendMessageInSnack(this@HomeFragment.getString(R.string.no_internet))
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.message.collect { message ->
+                Snackbar.make(binding.recyclerView, message, Snackbar.LENGTH_LONG)
+                    .show()
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { state ->
                 Log.d("TAG", "state: $state")
                 when (state) {
-                    Loading -> {
-                        Snackbar.make(binding.recyclerView, "Загружаем фото", Snackbar.LENGTH_SHORT)
-                            .show()
+                    State.Loading -> {
+                        binding.swipeToRefresh.isRefreshing = true
+                        viewModel.sendMessageInSnack(this@HomeFragment.getString(R.string.searching))
                     }
-                    Success -> {
+                    State.Success -> {
                         viewModel.photos?.onEach {
                             pagedAdapter.submitData(it)
                         }?.launchIn(viewLifecycleOwner.lifecycleScope)
+                        pagedAdapter.refresh()
+                        binding.swipeToRefresh.isRefreshing = false
                     }
-                    is Error -> {
+                    is State.Error -> {
                         Snackbar.make(binding.recyclerView, state.message, Snackbar.LENGTH_SHORT)
                             .show()
                     }
-                    else -> {
-
-                    }
+                    else -> {}
                 }
             }
         }
     }
 
+    private fun setAdapter() {
+        binding.recyclerView.adapter = pagedAdapter
+    }
 
-    private fun setupMenu() {
+
+    private fun setMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {}
 
@@ -92,7 +108,7 @@ class HomeFragment : Fragment() {
 
                 setSearchViewConfigs(searchView)
 
-                enableOnBackPressedCallBack(set = true, searchView = searchView)
+                enableOnBackPressedCallBack(searchView = searchView)
 
             }
 
@@ -103,7 +119,7 @@ class HomeFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun enableOnBackPressedCallBack(set: Boolean, searchView: SearchView) {
+    private fun enableOnBackPressedCallBack(set: Boolean = true, searchView: SearchView) {
         when (set) {
             true -> {
                 val mainActivity = requireActivity()
@@ -122,8 +138,8 @@ class HomeFragment : Fragment() {
                     }
                 )
             }
-            false -> {
-                Log.d("TAG", "enableOnBackPressedCallBack: $set")
+            else -> {
+                Log.d("TAG", "enableOnBackPressedCallBack disabled")
             }
         }
     }
@@ -160,12 +176,13 @@ class HomeFragment : Fragment() {
         searchView.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    viewModel.searchPhotos(query.toString())
-
-                    if (viewModel.state.value == State.Success) {
+                    if (checkForInternet(requireContext())) {
+                        viewModel.load(query.toString())
                         pagedAdapter.refresh()
+                        viewModel.sendMessageInSnack(this@HomeFragment.getString(R.string.searching, query.toString()))
+                    } else {
+                        viewModel.sendMessageInSnack(this@HomeFragment.getString(R.string.no_internet))
                     }
-                    Toast.makeText(context, query, Toast.LENGTH_SHORT).show()
                     return false
                 }
 
@@ -173,6 +190,22 @@ class HomeFragment : Fragment() {
                     return false
                 }
             })
+    }
+
+    private fun checkForInternet(context: Context): Boolean {
+
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val network = connectivityManager.activeNetwork ?: return false
+
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return when {
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            else -> false
+        }
     }
 
     override fun onDestroyView() {
