@@ -1,10 +1,10 @@
 package com.semenchuk.unsplash.di
 
-import android.app.Application
 import com.semenchuk.unsplash.domain.LoadPhotosUseCase
 import com.semenchuk.unsplash.ui.home.HomeViewModel
 import com.semenchuk.unsplash.ui.home.HomeViewModelFactory
-import com.semenchuk.unsplash.ui.home.paged_adapter.UnsplashPagedAdapter
+import com.semenchuk.unsplash.ui.singleDetailedPhoto.DetailedPhotosViewModel
+import com.semenchuk.unsplash.ui.singleDetailedPhoto.DetailedPhotosViewModelFactory
 import dagger.Module
 import dagger.Provides
 
@@ -26,8 +26,15 @@ class UiModule {
     }
 
     @Provides
-    fun provideUnsplashPagedAdapter(): UnsplashPagedAdapter {
-        return UnsplashPagedAdapter()
+    fun provideDetailedViewModel(loadPhotosUseCase: LoadPhotosUseCase): DetailedPhotosViewModel {
+        return DetailedPhotosViewModel(loadPhotosUseCase)
+    }
+
+    @Provides
+    fun provideDetailedViewModelFactory(
+        loadPhotosUseCase: LoadPhotosUseCase
+    ): DetailedPhotosViewModelFactory {
+        return DetailedPhotosViewModelFactory(loadPhotosUseCase)
     }
 }
 

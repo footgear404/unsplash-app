@@ -1,10 +1,10 @@
 package com.semenchuk.unsplash.data.retrofit
 
+import com.semenchuk.unsplash.data.retrofit.photoById.PhotoById
 import com.semenchuk.unsplash.data.retrofit.photos.GetPhotos
 import com.semenchuk.unsplash.data.retrofit.searchPhotos.SearchPhotos
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 
 class RetrofitService {
 
@@ -16,6 +16,8 @@ class RetrofitService {
     val getPhotos: GetPhotos = retrofit.create(GetPhotos::class.java)
 
     val searchPhotos: SearchPhotos = retrofit.create(SearchPhotos::class.java)
+
+    val getPhotoById: PhotoById = retrofit.create(PhotoById::class.java)
 
 
     companion object {

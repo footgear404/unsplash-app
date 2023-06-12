@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="30dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:context=".ui.singleDetailedPhoto.DetailedPhotosFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/includedImg"
+            layout="@layout/photo_list_item" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/baseline_location_on_24"
+                    tools:text="Location, REG" />
+
+                <TextView
+                    android:id="@+id/tags"
+                    style="@style/DetailedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="#tags" />
+
+                <TextView
+                    android:id="@+id/camera_name"
+                    style="@style/DetailedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Camera Name" />
+
+                <TextView
+                    android:id="@+id/model"
+                    style="@style/DetailedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Model" />
+
+                <TextView
+                    android:id="@+id/exposure"
+                    style="@style/DetailedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="0.1" />
+
+                <TextView
+                    android:id="@+id/aperture"
+                    style="@style/DetailedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="1.0" />
+
+                <TextView
+                    android:id="@+id/focal_length"
+                    style="@style/DetailedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Focal Length: 10" />
+
+                <TextView
+                    android:id="@+id/iso"
+                    style="@style/DetailedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="ISO: 100" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/about_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="About @username:\ntext" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_margin="5dp"
+            app:icon="@drawable/baseline_download_24"
+            android:text="@string/download" />
+
+    </LinearLayout>
+</ScrollView>
+

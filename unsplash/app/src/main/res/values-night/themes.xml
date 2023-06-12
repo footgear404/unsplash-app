@@ -25,4 +25,9 @@
     <style name="Theme.Unsplash.Indicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/black_500</item>
     </style>
+
+    <style name="ThemeOverlay.Unsplash.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_900</item>
+        <item name="fullscreenTextColor">@color/light_blue_A400</item>
+    </style>
 </resources>

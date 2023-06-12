@@ -21,13 +21,17 @@ import com.semenchuk.unsplash.databinding.TopOfDayItemBinding
 import com.semenchuk.unsplash.entities.PhotoItem
 
 
-class UnsplashPagedAdapter :
+class UnsplashPagedAdapter(private val onClick: (PhotoItem) -> Unit) :
     PagingDataAdapter<PhotoItem, BaseViewHolder<Any>>(PhotosDiffUtilCallback()) {
     override fun onBindViewHolder(holder: BaseViewHolder<Any>, position: Int) {
         val item = getItem(position)
         if (item != null) {
             holder.bind(item)
+            holder.itemView.rootView.setOnClickListener {
+                onClick(item)
+            }
         }
+
 
         if (position == 0) {
             val fullWidthItem =
@@ -86,6 +90,7 @@ class UnsplashPagedAdapter :
 class PhotoListViewHolder(
     private val binding: PhotoListItemBinding
 ) : BaseViewHolder<Any>(binding) {
+
     override fun bind(item: Any) {
         val context = binding.root.context
         item as PhotoItem

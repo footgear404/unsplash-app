@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailedPhotosFragment"
+            app:destination="@id/detailedPhotosFragment" />
     </fragment>
     <fragment
         android:id="@+id/collectionsFragment"
@@ -65,5 +68,10 @@
             app:popUpTo="@id/mobile_navigation"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/detailedPhotosFragment"
+        android:name="com.semenchuk.unsplash.ui.singleDetailedPhoto.DetailedPhotosFragment"
+        android:label="fragment_detalied_photos"
+        tools:layout="@layout/fragment_detalied_photos" />
 
 </navigation>

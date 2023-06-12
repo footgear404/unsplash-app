@@ -31,5 +31,6 @@
         <item>Share with friends, collect collections</item>
         <item>Upload your favorite pictures and track statistics</item>
     </string-array>
+    <string name="download">Download</string>
 
 </resources>

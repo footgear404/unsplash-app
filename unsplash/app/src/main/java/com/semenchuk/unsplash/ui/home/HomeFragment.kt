@@ -17,11 +17,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.R
+import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.databinding.FragmentHomeBinding
 import com.semenchuk.unsplash.domain.utils.State
+import com.semenchuk.unsplash.entities.PhotoItem
 import com.semenchuk.unsplash.ui.home.paged_adapter.UnsplashPagedAdapter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,7 +34,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val pagedAdapter = UnsplashPagedAdapter()
+    private val pagedAdapter = UnsplashPagedAdapter { item -> onItemClick(item) }
 
     private val viewModel: HomeViewModel by viewModels { App.appComponent.homeViewModelFactory() }
     override fun onCreateView(
@@ -90,6 +92,11 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun onItemClick(it: PhotoItem) {
+        Log.d("TAG", "onItemClick: clicked: $it")
+        findNavController().navigate(R.id.detailedPhotosFragment)
     }
 
     private fun setAdapter() {
