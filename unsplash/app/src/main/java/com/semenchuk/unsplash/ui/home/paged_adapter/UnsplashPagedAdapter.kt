@@ -94,9 +94,9 @@ class PhotoListViewHolder(
     override fun bind(item: Any) {
         val context = binding.root.context
         item as PhotoItem
-        binding.userName.text = "${item.user?.firstName} ${item.user?.lastName ?: ""}"
-        binding.nickname.text = "@" + item.user?.username
-        binding.commentsCount.text = item.likes.toString()
+        binding.userName.text = context.resources.getString(R.string.username, item.user?.firstName, item.user?.lastName ?: "")
+        binding.nickname.text = context.resources.getString(R.string.nickname, item.user?.username)
+        binding.likesCount.text = item.likes.toString()
 
         Glide.with(context)
             .load(item.urls?.regular)
@@ -140,9 +140,9 @@ class TopOfDayViewHolder(
     override fun bind(item: Any) {
         val context = binding.root.context
         item as PhotoItem
-        binding.userName.text = "${item.user?.firstName} ${item.user?.lastName ?: ""}"
-        binding.nickname.text = "@" + item.user?.username
-        binding.commentsCount.text = item.likes.toString()
+        binding.userName.text = context.resources.getString(R.string.username, item.user?.firstName, item.user?.lastName ?: "")
+        binding.nickname.text = context.resources.getString(R.string.nickname, item.user?.username)
+        binding.likesCount.text = item.likes.toString()
         Glide.with(context)
             .load(item.urls?.regular)
             .placeholder(R.drawable.sample_img)

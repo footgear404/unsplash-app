@@ -6,24 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="30dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
     tools:context=".ui.singleDetailedPhoto.DetailedPhotosFragment">
 
     <LinearLayout
+        android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <include
+
             android:id="@+id/includedImg"
-            layout="@layout/photo_list_item" />
+            layout="@layout/top_of_day_item" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -92,12 +91,32 @@
                     tools:text="ISO: 100" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/about_author"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                tools:text="About @username:\ntext" />
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/about_author"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="About @username:\ntext" />
+
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Description: " />
+
+                </LinearLayout>
+
+            </ScrollView>
+
 
         </LinearLayout>
 
@@ -106,8 +125,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_margin="5dp"
-            app:icon="@drawable/baseline_download_24"
-            android:text="@string/download" />
+            android:text="@string/download"
+            app:icon="@drawable/baseline_download_24" />
 
     </LinearLayout>
 </ScrollView>

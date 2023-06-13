@@ -1,6 +1,7 @@
 package com.semenchuk.unsplash.data.retrofit.photoById.models
 
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.Urls
+import com.semenchuk.unsplash.data.retrofit.photos.models.photos.User
 import com.semenchuk.unsplash.entities.DetailedPhotoItem
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -24,5 +25,7 @@ class DetailedPhoto(
     @Json(name = "tags")
     override val tags: List<Tags>,
     @Json(name = "urls")
-    override val urls: Urls
+    override val urls: Urls,
+    @Json(name = "user")
+    override val user: User
 ) : DetailedPhotoItem

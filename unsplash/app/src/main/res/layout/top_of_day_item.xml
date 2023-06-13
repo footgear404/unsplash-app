@@ -46,6 +46,7 @@
             android:layout_height="48dp"
             android:contentDescription="@string/author_image_description"
             android:padding="3dp"
+            android:layout_margin="10dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="@id/background_photo"
             app:layout_constraintLeft_toLeftOf="@id/background_photo"
@@ -102,7 +103,7 @@
             app:layout_constraintTop_toTopOf="@id/author_profile_img" />
 
         <TextView
-            android:id="@+id/comments_count"
+            android:id="@+id/likes_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:shadowColor="@color/black_700"

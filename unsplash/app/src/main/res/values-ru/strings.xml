@@ -21,16 +21,31 @@
     <string name="like_unlike">Нравится|Не Нравится кнопка</string>
     <string name="feed">Лента</string>
     <string name="collections">Коллекции</string>
+    <string name="details">Детали</string>
     <string name="profile">Профиль</string>
     <string name="search">что будем искать?</string>
     <string name="searching">Загружаем фото: %1$s</string>
     <string name="no_internet">Нет соединения с интернетом</string>
-    <string name="download">Download</string>
+
+    <string name="nickname">\@%1$s</string>
+    <string name="username">%1$s %2$s</string>
+
+    <string name="location">%1$s, %2$s.</string>
+    <string name="madeWith">Made with: %1$s</string>
+    <string name="model">Made with: %1$s</string>
+    <string name="exposure">Model: %1$s</string>
+    <string name="aperture">Exposure: %1$s</string>
+    <string name="focalLength">Focal Length: %1$s</string>
+    <string name="iso">ISO: %1$s</string>
+    <string name="aboutAuthor">About @%1$s, %2$s:</string>
+    <string name="description">Description: %1$s</string>
 
     <string-array name="onBoardText">
         <item>Создавайте снимки, публикуйте, собирайте аудиторию, получайте фидбек!</item>
         <item>Делитесь с друзьями, собирайте коллекции</item>
         <item>Загружайте любимые снимки и отслеживайте статистику</item>
     </string-array>
+
+    <string name="download">Download</string>
 
 </resources>

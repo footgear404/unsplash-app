@@ -71,7 +71,7 @@
     <fragment
         android:id="@+id/detailedPhotosFragment"
         android:name="com.semenchuk.unsplash.ui.singleDetailedPhoto.DetailedPhotosFragment"
-        android:label="fragment_detalied_photos"
+        android:label="@string/details"
         tools:layout="@layout/fragment_detalied_photos" />
 
 </navigation>

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Unsplash</string>
     <string name="title_home">Home</string>
@@ -22,15 +23,30 @@
     <string name="feed">Feed</string>
     <string name="collections">Collections</string>
     <string name="profile">Profile</string>
+    <string name="details">Details</string>
     <string name="search">What are we looking for?</string>
     <string name="searching">Loading photos: %1$s</string>
     <string name="no_internet">No internet connection</string>
+
+    <string name="nickname">\@%1$s</string>
+    <string name="username">%1$s %2$s</string>
+
+    <string name="location">%1$s, %2$s.</string>
+    <string name="madeWith">Made with: %1$s</string>
+    <string name="model">Made with: %1$s</string>
+    <string name="exposure">Model: %1$s</string>
+    <string name="aperture">Exposure: %1$s</string>
+    <string name="focalLength">Focal Length: %1$s</string>
+    <string name="iso">ISO: %1$s</string>
+    <string name="aboutAuthor">About @%1$s: %2$s</string>
+    <string name="description">Description: %1$s</string>
 
     <string-array name="onBoardText">
         <item>Create pictures, publish, gather an audience, get feedback!</item>
         <item>Share with friends, collect collections</item>
         <item>Upload your favorite pictures and track statistics</item>
     </string-array>
-    <string name="download">Download</string>
 
+    <string name="download">Download</string>
+    `
 </resources>

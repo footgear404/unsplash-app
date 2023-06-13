@@ -16,23 +16,27 @@ class DetailedPhotosViewModel(
     private val loadPhotosUseCase: LoadPhotosUseCase,
 ) : ViewModel() {
 
-    private var _photo: MutableStateFlow<DetailedPhoto>? = null
-    val photo get() = _photo?.asStateFlow()
+    private var _photo = MutableStateFlow<DetailedPhoto?>(null)
+    val photo get() = _photo.asStateFlow()
 
     private var _state = MutableStateFlow<State>(State.Await)
     val state get() = _state.asStateFlow()
 
     private var _message = Channel<String>(Channel.BUFFERED)
-    private val message = _message.receiveAsFlow()
+    val message get() = _message.receiveAsFlow()
 
-    fun load(id: String) {
+    init {
+        load("V8w0gSmxajY")
+    }
+
+    private fun load(id: String) {
         _state.value = State.Loading
         viewModelScope.launch {
             try {
                 val result = loadPhotosUseCase.findPhoto(id = id)
                 Log.d("TAG", "try load: ${result.message()}")
                 if (result.isSuccessful) {
-                    _photo?.value = result.body()!!
+                    _photo.value = result.body()!!
                     _state.value = State.Success
                     _message.send("Load success!")
                     Log.d("TAG", "if load: ${result.message()}")
@@ -45,6 +49,10 @@ class DetailedPhotosViewModel(
                 _message.send(e.message.toString())
             }
         }
+    }
+
+    suspend fun sendMessage(message: String) {
+        _message.send(message)
     }
 
 
