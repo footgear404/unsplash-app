@@ -1,5 +1,6 @@
 package com.semenchuk.unsplash.data.room.photos
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
@@ -7,7 +8,9 @@ import androidx.room.PrimaryKey
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.Urls
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.User
 import com.semenchuk.unsplash.entities.PhotoItem
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @Entity(tableName = "saved_photo")
 data class SavedPhotoEntity(
     @PrimaryKey
@@ -28,6 +31,7 @@ data class SavedPhotoEntity(
     override val blurHash: String?,
     override val color: String?,
     override val createdAt: String?,
+    @ColumnInfo(name = "user_description")
     override val description: String?,
     @ColumnInfo(name = "height")
     override val height: Int?,
@@ -39,4 +43,4 @@ data class SavedPhotoEntity(
     @Embedded override val user: User?,
     @ColumnInfo(name = "width")
     override val width: Int?,
-): PhotoItem
+): PhotoItem, Parcelable

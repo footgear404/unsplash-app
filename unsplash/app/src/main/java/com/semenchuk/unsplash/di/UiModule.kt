@@ -3,8 +3,8 @@ package com.semenchuk.unsplash.di
 import com.semenchuk.unsplash.domain.LoadPhotosUseCase
 import com.semenchuk.unsplash.ui.home.HomeViewModel
 import com.semenchuk.unsplash.ui.home.HomeViewModelFactory
-import com.semenchuk.unsplash.ui.singleDetailedPhoto.DetailedPhotosViewModel
-import com.semenchuk.unsplash.ui.singleDetailedPhoto.DetailedPhotosViewModelFactory
+import com.semenchuk.unsplash.ui.singlePhoto.DetailedPhotosViewModel
+import com.semenchuk.unsplash.ui.singlePhoto.DetailedPhotosViewModelFactory
 import dagger.Module
 import dagger.Provides
 

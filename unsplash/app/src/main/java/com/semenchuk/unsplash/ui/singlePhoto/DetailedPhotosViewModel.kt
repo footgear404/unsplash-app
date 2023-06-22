@@ -1,5 +1,7 @@
-package com.semenchuk.unsplash.ui.singleDetailedPhoto
+package com.semenchuk.unsplash.ui.singlePhoto
 
+import android.graphics.Bitmap
+import android.os.Environment
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +13,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 class DetailedPhotosViewModel(
     private val loadPhotosUseCase: LoadPhotosUseCase,
@@ -25,11 +30,7 @@ class DetailedPhotosViewModel(
     private var _message = Channel<String>(Channel.BUFFERED)
     val message get() = _message.receiveAsFlow()
 
-    init {
-        load("V8w0gSmxajY")
-    }
-
-    private fun load(id: String) {
+    fun load(id: String) {
         _state.value = State.Loading
         viewModelScope.launch {
             try {
@@ -51,8 +52,36 @@ class DetailedPhotosViewModel(
         }
     }
 
-    suspend fun sendMessage(message: String) {
-        _message.send(message)
+    fun download(image: Bitmap, fileName: String): String? {
+        var savedImagePath: String? = null
+        val imageFileName = "$fileName.jpg"
+        val storageDir = File(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                .toString() + "/unsplash"
+        )
+        var success = true
+        if (!storageDir.exists()) {
+            success = storageDir.mkdirs()
+        }
+        if (success) {
+            val imageFile = File(storageDir, imageFileName)
+            savedImagePath = imageFile.absolutePath
+            try {
+                val fOut: OutputStream = FileOutputStream(imageFile)
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut)
+                fOut.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            sendMessage("Image was saved in $savedImagePath")
+        }
+        return savedImagePath
+    }
+
+    fun sendMessage(message: String) {
+        viewModelScope.launch {
+            _message.send(message)
+        }
     }
 
 

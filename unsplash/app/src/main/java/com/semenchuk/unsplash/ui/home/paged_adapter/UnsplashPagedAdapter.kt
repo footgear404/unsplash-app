@@ -17,7 +17,6 @@ import com.bumptech.glide.request.target.Target
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.databinding.PhotoListItemBinding
 import com.semenchuk.unsplash.databinding.TopOfDayItemBinding
-
 import com.semenchuk.unsplash.entities.PhotoItem
 
 
@@ -25,8 +24,11 @@ class UnsplashPagedAdapter(private val onClick: (PhotoItem) -> Unit) :
     PagingDataAdapter<PhotoItem, BaseViewHolder<Any>>(PhotosDiffUtilCallback()) {
     override fun onBindViewHolder(holder: BaseViewHolder<Any>, position: Int) {
         val item = getItem(position)
+
         if (item != null) {
+
             holder.bind(item)
+
             holder.itemView.rootView.setOnClickListener {
                 onClick(item)
             }
@@ -140,6 +142,7 @@ class TopOfDayViewHolder(
     override fun bind(item: Any) {
         val context = binding.root.context
         item as PhotoItem
+        binding.header.text = context.resources.getString(R.string.today_in_the_top)
         binding.userName.text = context.resources.getString(R.string.username, item.user?.firstName, item.user?.lastName ?: "")
         binding.nickname.text = context.resources.getString(R.string.nickname, item.user?.username)
         binding.likesCount.text = item.likes.toString()

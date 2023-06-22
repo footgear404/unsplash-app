@@ -1,9 +1,12 @@
 package com.semenchuk.unsplash.data.retrofit.photos.models.photos
 
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class Urls(
     @Json(name = "full")
@@ -16,4 +19,4 @@ data class Urls(
     val smallS3: String?,
     @Json(name = "thumb")
     val thumb: String?
-)
+): Parcelable

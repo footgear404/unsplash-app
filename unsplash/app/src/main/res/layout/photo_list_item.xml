@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:transitionName="test"
         android:id="@+id/background_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,8 +71,8 @@
 
     <ImageButton
         android:id="@+id/like"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:background="@null"
         android:contentDescription="@string/like_unlike"
         android:foregroundGravity="center"

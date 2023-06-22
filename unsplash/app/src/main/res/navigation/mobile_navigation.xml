@@ -34,7 +34,15 @@
             app:destination="@id/profileFragment" />
         <action
             android:id="@+id/action_homeFragment_to_detailedPhotosFragment"
-            app:destination="@id/detailedPhotosFragment" />
+            app:destination="@id/detailedPhotosFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out">
+            <argument
+                android:name="photoItem"
+                app:argType="com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/collectionsFragment"
@@ -70,8 +78,12 @@
     </fragment>
     <fragment
         android:id="@+id/detailedPhotosFragment"
-        android:name="com.semenchuk.unsplash.ui.singleDetailedPhoto.DetailedPhotosFragment"
+        android:name="com.semenchuk.unsplash.ui.singlePhoto.DetailedPhotosFragment"
         android:label="@string/details"
-        tools:layout="@layout/fragment_detalied_photos" />
+        tools:layout="@layout/fragment_detalied_photos" >
+        <argument
+            android:name="photoItem"
+            app:argType="com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity" />
+    </fragment>
 
 </navigation>

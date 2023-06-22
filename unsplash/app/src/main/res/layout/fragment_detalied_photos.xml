@@ -5,21 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="30dp"
-    tools:context=".ui.singleDetailedPhoto.DetailedPhotosFragment">
+    tools:context=".ui.singlePhoto.DetailedPhotosFragment">
 
     <LinearLayout
-        android:id="@+id/mainContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <include
-
             android:id="@+id/includedImg"
             layout="@layout/top_of_day_item" />
 
         <LinearLayout
+            android:id="@+id/detailsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
@@ -28,15 +26,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:gravity="center"
+                    android:layout_marginStart="20dp"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/baseline_location_on_24"
                     tools:text="Location, REG" />
@@ -44,90 +41,92 @@
                 <TextView
                     android:id="@+id/tags"
                     style="@style/DetailedText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="#tags" />
 
-                <TextView
-                    android:id="@+id/camera_name"
-                    style="@style/DetailedText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="Camera Name" />
-
-                <TextView
-                    android:id="@+id/model"
-                    style="@style/DetailedText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="Model" />
-
-                <TextView
-                    android:id="@+id/exposure"
-                    style="@style/DetailedText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="0.1" />
-
-                <TextView
-                    android:id="@+id/aperture"
-                    style="@style/DetailedText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="1.0" />
-
-                <TextView
-                    android:id="@+id/focal_length"
-                    style="@style/DetailedText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="Focal Length: 10" />
-
-                <TextView
-                    android:id="@+id/iso"
-                    style="@style/DetailedText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="ISO: 100" />
-            </LinearLayout>
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp">
 
-                    <TextView
-                        android:id="@+id/about_author"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="About @username:\ntext" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/description"
+                        <TextView
+                            android:id="@+id/camera_name"
+                            style="@style/DetailedText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="Camera Name" />
+
+                        <TextView
+                            android:id="@+id/model"
+                            style="@style/DetailedText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="Model" />
+
+                        <TextView
+                            android:id="@+id/exposure"
+                            style="@style/DetailedText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="0.1" />
+
+                        <TextView
+                            android:id="@+id/aperture"
+                            style="@style/DetailedText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="1.0" />
+
+                        <TextView
+                            android:id="@+id/focal_length"
+                            style="@style/DetailedText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="Focal Length: 10" />
+
+                        <TextView
+                            android:id="@+id/iso"
+                            style="@style/DetailedText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="ISO: 100" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_marginEnd="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:text="Description: " />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
+                        <TextView
+                            android:id="@+id/about_author"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="About @username:\ntext" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/download"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:text="@string/download"
+                            app:icon="@drawable/baseline_download_24" />
+                    </LinearLayout>
                 </LinearLayout>
-
-            </ScrollView>
-
-
+            </LinearLayout>
         </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_margin="5dp"
-            android:text="@string/download"
-            app:icon="@drawable/baseline_download_24" />
-
     </LinearLayout>
 </ScrollView>
 

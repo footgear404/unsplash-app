@@ -17,6 +17,7 @@
     <string name="get_user_error">Get user error</string>
     <string name="unsplash_photo">unsplash photo</string>
     <string name="today_in_the_top">Сегодня в топе</string>
+    <string name="title">Заголовок</string>
     <string name="author_image_description">Изображение автора</string>
     <string name="like_unlike">Нравится|Не Нравится кнопка</string>
     <string name="feed">Лента</string>
@@ -30,15 +31,18 @@
     <string name="nickname">\@%1$s</string>
     <string name="username">%1$s %2$s</string>
 
-    <string name="location">%1$s, %2$s.</string>
+    <string name="unknown">Неизвестно</string>
+    <string name="location">%1$s</string>
     <string name="madeWith">Made with: %1$s</string>
-    <string name="model">Made with: %1$s</string>
-    <string name="exposure">Model: %1$s</string>
-    <string name="aperture">Exposure: %1$s</string>
+    <string name="model">Model: %1$s</string>
+    <string name="exposure">Exposure: %1$s</string>
+    <string name="aperture">Aperture: %1$s</string>
     <string name="focalLength">Focal Length: %1$s</string>
     <string name="iso">ISO: %1$s</string>
-    <string name="aboutAuthor">About @%1$s, %2$s:</string>
-    <string name="description">Description: %1$s</string>
+    <string name="aboutAuthor">О @%1$s: %2$s</string>
+    <string name="no_about">Не рассказал о себе</string>
+    <string name="description">Описание: %1$s</string>
+    <string name="no_description">Отсутствует :(</string>
 
     <string-array name="onBoardText">
         <item>Создавайте снимки, публикуйте, собирайте аудиторию, получайте фидбек!</item>
@@ -47,5 +51,8 @@
     </string-array>
 
     <string name="download">Download</string>
+    <string name="open_with_text">Открыть с помощью…</string>
+
+    <string name="image_transaction_name">image_transaction_name</string>
 
 </resources>

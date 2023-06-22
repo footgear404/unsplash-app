@@ -21,9 +21,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.app.App
+import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
 import com.semenchuk.unsplash.databinding.FragmentHomeBinding
 import com.semenchuk.unsplash.domain.utils.State
-import com.semenchuk.unsplash.entities.PhotoItem
 import com.semenchuk.unsplash.ui.home.paged_adapter.UnsplashPagedAdapter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -34,7 +34,8 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val pagedAdapter = UnsplashPagedAdapter { item -> onItemClick(item) }
+    private val pagedAdapter =
+        UnsplashPagedAdapter { item -> onItemClick(item as SavedPhotoEntity) }
 
     private val viewModel: HomeViewModel by viewModels { App.appComponent.homeViewModelFactory() }
     override fun onCreateView(
@@ -94,9 +95,12 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun onItemClick(it: PhotoItem) {
+    private fun onItemClick(it: SavedPhotoEntity) {
+
         Log.d("TAG", "onItemClick: clicked: $it")
-        findNavController().navigate(R.id.detailedPhotosFragment)
+        val direction = HomeFragmentDirections.actionHomeFragmentToDetailedPhotosFragment(it)
+
+        findNavController().navigate(direction)
     }
 
     private fun setAdapter() {
@@ -186,7 +190,12 @@ class HomeFragment : Fragment() {
                     if (checkForInternet(requireContext())) {
                         viewModel.load(query.toString())
                         pagedAdapter.refresh()
-                        viewModel.sendMessageInSnack(this@HomeFragment.getString(R.string.searching, query.toString()))
+                        viewModel.sendMessageInSnack(
+                            this@HomeFragment.getString(
+                                R.string.searching,
+                                query.toString()
+                            )
+                        )
                     } else {
                         viewModel.sendMessageInSnack(this@HomeFragment.getString(R.string.no_internet))
                     }

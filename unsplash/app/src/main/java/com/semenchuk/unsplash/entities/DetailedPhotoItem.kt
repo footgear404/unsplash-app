@@ -13,7 +13,7 @@ interface DetailedPhotoItem {
     val likedByUser: Boolean
     val description: String?
     val exif: Exif
-    val location: Location
+    val location: Location?
     val tags: List<Tags>
     val urls: Urls
     val user: User

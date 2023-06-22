@@ -1,10 +1,13 @@
 package com.semenchuk.unsplash.data.retrofit.photos.models.photos
 
 
+import android.os.Parcelable
 import androidx.room.Embedded
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 @JsonClass(generateAdapter = true)
 data class User(
     @Json(name = "bio")
@@ -24,5 +27,7 @@ data class User(
     @Json(name = "profile_image")
     @Embedded val profileImage: ProfileImage?,
     @Json(name = "username")
-    val username: String?
-)
+    val username: String?,
+    @Json(name = "description")
+    val description: String?
+): Parcelable
