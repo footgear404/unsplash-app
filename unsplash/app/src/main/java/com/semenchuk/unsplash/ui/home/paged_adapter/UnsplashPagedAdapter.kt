@@ -100,6 +100,8 @@ class PhotoListViewHolder(
         binding.nickname.text = context.resources.getString(R.string.nickname, item.user?.username)
         binding.likesCount.text = item.likes.toString()
 
+        binding.like.isSelected = item.likedByUser == true
+
         Glide.with(context)
             .load(item.urls?.regular)
             .placeholder(R.drawable.sample_img)
@@ -146,6 +148,9 @@ class TopOfDayViewHolder(
         binding.userName.text = context.resources.getString(R.string.username, item.user?.firstName, item.user?.lastName ?: "")
         binding.nickname.text = context.resources.getString(R.string.nickname, item.user?.username)
         binding.likesCount.text = item.likes.toString()
+
+        binding.like.isSelected = item.likedByUser == true
+
         Glide.with(context)
             .load(item.urls?.regular)
             .placeholder(R.drawable.sample_img)

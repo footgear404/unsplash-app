@@ -35,7 +35,9 @@ data class SavedPhotoEntity(
     override val description: String?,
     @ColumnInfo(name = "height")
     override val height: Int?,
-    override val likedByUser: Boolean?,
+    @ColumnInfo(name = "likedByUser")
+    override val likedByUser: Boolean,
+    @ColumnInfo(name = "likes")
     override val likes: Int?,
     override val promotedAt: String?,
     override val updatedAt: String?,

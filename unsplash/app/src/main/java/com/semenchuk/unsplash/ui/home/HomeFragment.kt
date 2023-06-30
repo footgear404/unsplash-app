@@ -96,11 +96,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun onItemClick(it: SavedPhotoEntity) {
-
-        Log.d("TAG", "onItemClick: clicked: $it")
+        Log.d("CLICK", "onItemClick: $it")
         val direction = HomeFragmentDirections.actionHomeFragmentToDetailedPhotosFragment(it)
-
         findNavController().navigate(direction)
+    }
+
+    private fun onLikeClick(it: SavedPhotoEntity) {
+        Log.d("CLICK", "onLikeClick: $it")
     }
 
     private fun setAdapter() {

@@ -33,6 +33,9 @@
     <string name="username">%1$s %2$s</string>
 
     <string name="unknown">Unknown</string>
+    <string name="download_start">Start downloading</string>
+    <string name="download_success">Image saved in: %1$s</string>
+    <string name="download_failed">Image downloading failure</string>
     <string name="location">%1$s</string>
     <string name="madeWith">Made with: %1$s</string>
     <string name="model">Model: %1$s</string>
@@ -55,5 +58,8 @@
     <string name="open_with_text">Open with…</string>
 
     <string name="image_transaction_name">image_transaction_name</string>
+
+    <string name="map_app_error">Not found app with maps</string>
+    <string name="error">Something went wrong</string>
 
 </resources>

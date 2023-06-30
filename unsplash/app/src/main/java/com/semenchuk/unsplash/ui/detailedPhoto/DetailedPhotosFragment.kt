@@ -1,8 +1,9 @@
-package com.semenchuk.unsplash.ui.singlePhoto
+package com.semenchuk.unsplash.ui.detailedPhoto
 
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
@@ -32,25 +33,20 @@ import com.google.android.material.snackbar.Snackbar
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.data.retrofit.photoById.models.DetailedPhoto
-import com.semenchuk.unsplash.data.retrofit.photoById.models.Tags
+import com.semenchuk.unsplash.data.retrofit.photoById.models.Tag
 import com.semenchuk.unsplash.databinding.FragmentDetaliedPhotosBinding
 import com.semenchuk.unsplash.domain.utils.State
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class DetailedPhotosFragment : Fragment() {
 
     private var _binding: FragmentDetaliedPhotosBinding? = null
     private val binding get() = _binding!!
-
     private val args by navArgs<DetailedPhotosFragmentArgs>()
-
     private val viewModel: DetailedPhotosViewModel by viewModels { App.appComponent.detailedPhotosViewModelFactory() }
-
     private var isAllGranted = false
-
     private val launcher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { map ->
             if (map.values.all { it }) {
@@ -80,33 +76,73 @@ class DetailedPhotosFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setFullSizeImageView()
+        setImage()
+
+        binding.includedImg.like.setOnClickListener {
+            viewModel.setLike(args.photoItem.id, binding.includedImg.like.isSelected)
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.likeUnlike.collect { photo ->
+                if (photo != null) {
+                    binding.includedImg.likesCount.text = photo.likes.toString()
+                    binding.includedImg.like.isSelected = photo.likedByUser
+                } else {
+                    viewModel.sendMessage(getString(R.string.error))
+                }
+            }
+        }
+
+
         binding.download.setOnClickListener {
             if (checkPermissions()) {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    viewModel.download(withContext(Dispatchers.IO) {
-                        Glide.with(requireContext())
-                            .asBitmap()
-                            .load(args.photoItem.urls!!.full)
-                            .placeholder(android.R.drawable.progress_indeterminate_horizontal) // need placeholder to avoid issue like glide annotations
-                            .error(android.R.drawable.stat_notify_error) // need error to avoid issue like glide annotations
-                            .submit()
-                            .get()
-                    }, fileName = args.photoItem.id)
+                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                    val saveResult = viewModel.saveImage(
+                        loadImageFromUrl(url = args.photoItem.urls!!.full),
+                        imageName = args.photoItem.id
+                    )
+                    if (saveResult != null) {
+                        viewModel.sendMessage(getString(R.string.download_success, saveResult))
+                    }
                 }
             } else {
                 launcher.launch(REQUEST_PERMISSIONS)
             }
         }
 
-        viewModel.load(id = args.photoItem.id)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.state.collect { state ->
+                when (state) {
+                    State.Loading -> {
+                        binding.detailsContainer.visibility = View.GONE
+                        binding.detailsProgress.visibility = View.VISIBLE
+                    }
+                    State.Success -> {
+                        setupDetails(viewModel.photo.value!!)
+                        binding.detailsContainer.visibility = View.VISIBLE
+                        binding.detailsProgress.visibility = View.GONE
+                    }
+                    is State.Error -> {
+                        binding.detailsContainer.visibility = View.GONE
+                        binding.detailsProgress.visibility = View.VISIBLE
+                        viewModel.sendMessage(state.message)
+                    }
+                    else -> {
+                        viewModel.sendMessage("Else")
+                    }
+                }
+            }
+        }
 
-        val layoutParams = LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
-        )
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.message.collect {
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+            }
+        }
+    }
 
-        binding.includedImg.backgroundPhoto.layoutParams = layoutParams
-
+    private fun setImage() {
         setImageToView(
             description = "photo",
             img_url = args.photoItem.urls!!.regular,
@@ -117,7 +153,7 @@ class DetailedPhotosFragment : Fragment() {
             img_url = args.photoItem.urls!!.regular,
             view = binding.includedImg.authorProfileImg
         )
-
+        binding.includedImg.like.isSelected = args.photoItem.likedByUser == true
         binding.includedImg.userName.text =
             resources.getString(
                 R.string.username,
@@ -127,47 +163,44 @@ class DetailedPhotosFragment : Fragment() {
         binding.includedImg.nickname.text =
             resources.getString(R.string.nickname, args.photoItem.user!!.firstName)
         binding.includedImg.likesCount.text = args.photoItem.likes.toString()
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.message.collect {
-                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
-            }
-        }
+    private fun setFullSizeImageView() {
+        viewModel.load(id = args.photoItem.id)
+        val layoutParams = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        binding.includedImg.backgroundPhoto.layoutParams = layoutParams
+    }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state.collect { state ->
-                when (state) {
-                    State.Loading -> {
-                        viewModel.sendMessage("Loading")
-                        binding.detailsContainer.visibility = View.GONE
-                    }
-                    State.Success -> {
-                        setupDetails(viewModel.photo.value!!)
-                        binding.detailsContainer.visibility = View.VISIBLE
-                    }
-                    else -> {
-                        viewModel.sendMessage("Error loading")
-                    }
-                }
-            }
+    private fun loadImageFromUrl(url: String?): Bitmap? {
+        return try {
+            viewModel.sendMessage(getString(R.string.download_start))
+            Glide.with(requireContext())
+                .asBitmap()
+                .load(url)
+                .placeholder(android.R.drawable.progress_indeterminate_horizontal)
+                .error(android.R.drawable.stat_notify_error)
+                .submit()
+                .get()
+        } catch (e: Exception) {
+            Log.d("DOWNLOAD", "loadImageFromUrl failed: $e")
+            viewModel.sendMessage(getString(R.string.download_failed))
+            return null
         }
     }
 
     private fun setupDetails(data: DetailedPhoto) {
-
         binding.includedImg.header.text = resources.getString(
             R.string.description, data.description
                 ?: resources.getString(R.string.no_description)
         )
-
-        binding.location.text = resources.getString(R.string.location,
-                data.location.name ?: resources.getString(R.string.unknown)
-            )
-
+        binding.location.text = resources.getString(
+            R.string.location,
+            data.location.name ?: resources.getString(R.string.unknown)
+        )
         binding.tags.text = collectTags(data.tags)
-
-
-
         binding.cameraName.text = resources.getString(
             R.string.madeWith,
             data.exif.name ?: resources.getString(R.string.unknown)
@@ -192,16 +225,13 @@ class DetailedPhotosFragment : Fragment() {
             R.string.iso,
             data.exif.iso ?: resources.getString(R.string.unknown)
         )
-
         binding.aboutAuthor.text =
             resources.getString(
                 R.string.aboutAuthor,
                 data.user.username,
                 data.user.bio ?: resources.getString(R.string.no_about)
             )
-
         binding.location.setOnClickListener {
-
             val latitude = data.location.position?.latitude ?: 0.0
             val longitude = data.location.position?.longitude ?: 0.0
 
@@ -213,13 +243,13 @@ class DetailedPhotosFragment : Fragment() {
                 startActivity(Intent.createChooser(intent, getString(R.string.open_with_text)))
             } catch (e: Exception) {
                 viewLifecycleOwner.lifecycleScope.launch {
-                    viewModel.sendMessage("No have app with maps")
+                    viewModel.sendMessage(getString(R.string.map_app_error))
                 }
             }
         }
     }
 
-    private fun collectTags(tags: List<Tags>): String {
+    private fun collectTags(tags: List<Tag>): String {
         var result = ""
         tags.forEach {
             result += "#${it.title} "
@@ -261,7 +291,6 @@ class DetailedPhotosFragment : Fragment() {
             .into(view)
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -273,11 +302,9 @@ class DetailedPhotosFragment : Fragment() {
                     PackageManager.PERMISSION_GRANTED
         }
         return if (isAllGranted) {
-            Log.d("TAG", "checkPermissions: $isAllGranted")
-            true
+            Log.d("PERMISSIONS", "All permissions is granted"); true
         } else {
-            Log.d("TAG", "checkPermissions: $isAllGranted")
-            false
+            Log.d("PERMISSIONS", "Permissions not granted"); false
         }
     }
 

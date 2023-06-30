@@ -12,6 +12,6 @@ interface GetPhotos {
         @Header("Authorization") authHeader: String,
         @Query("page") page: Int,
         @Query("per_page") per_page: Int,
-        @Query("order_by") orderBy: String = "popular"
+        @Query("order_by") orderBy: String = "latest"
     ): Response<List<UnsplashPhotosItem>>
 }

@@ -11,7 +11,7 @@ interface PhotoItem {
     val description: String?
     val height: Int?
     val id: String?
-    val likedByUser: Boolean?
+    val likedByUser: Boolean
     val likes: Int?
     val promotedAt: String?
     val updatedAt: String?

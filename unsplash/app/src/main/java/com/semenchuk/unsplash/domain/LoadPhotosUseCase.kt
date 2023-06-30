@@ -2,6 +2,7 @@ package com.semenchuk.unsplash.domain
 
 import androidx.paging.Pager
 import com.semenchuk.unsplash.data.UnsplashRepository
+import com.semenchuk.unsplash.data.retrofit.like.models.LikeResponse
 import com.semenchuk.unsplash.data.retrofit.photoById.models.DetailedPhoto
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
 import retrofit2.Response
@@ -16,5 +17,13 @@ class LoadPhotosUseCase(
 
     suspend fun findPhoto(id: String): Response<DetailedPhoto> {
         return unsplashRepository.getPhotoById(id)
+    }
+
+    suspend fun like(id: String): Response<LikeResponse> {
+        return unsplashRepository.addLike(id)
+    }
+
+    suspend fun unlike(id: String): Response<LikeResponse> {
+        return unsplashRepository.removeLike(id)
     }
 }

@@ -1,5 +1,7 @@
 package com.semenchuk.unsplash.data.retrofit
 
+import com.semenchuk.unsplash.data.retrofit.like.LikePhoto
+import com.semenchuk.unsplash.data.retrofit.like.UnLikePhoto
 import com.semenchuk.unsplash.data.retrofit.photoById.PhotoById
 import com.semenchuk.unsplash.data.retrofit.photos.GetPhotos
 import com.semenchuk.unsplash.data.retrofit.searchPhotos.SearchPhotos
@@ -18,6 +20,10 @@ class RetrofitService {
     val searchPhotos: SearchPhotos = retrofit.create(SearchPhotos::class.java)
 
     val getPhotoById: PhotoById = retrofit.create(PhotoById::class.java)
+
+    val likePhoto: LikePhoto = retrofit.create(LikePhoto::class.java)
+
+    val unLikePhoto: UnLikePhoto = retrofit.create(UnLikePhoto::class.java)
 
 
     companion object {

@@ -32,12 +32,15 @@
     <string name="username">%1$s %2$s</string>
 
     <string name="unknown">Неизвестно</string>
+    <string name="download_start">Загрузка началась</string>
+    <string name="download_success">Изображение сохранено в: %1$s</string>
+    <string name="download_failed">Неудалось загрузить изображение</string>
     <string name="location">%1$s</string>
-    <string name="madeWith">Made with: %1$s</string>
-    <string name="model">Model: %1$s</string>
-    <string name="exposure">Exposure: %1$s</string>
-    <string name="aperture">Aperture: %1$s</string>
-    <string name="focalLength">Focal Length: %1$s</string>
+    <string name="madeWith">Сделано на: %1$s</string>
+    <string name="model">Модель: %1$s</string>
+    <string name="exposure">Экспозиция: %1$s</string>
+    <string name="aperture">Апертура: %1$s</string>
+    <string name="focalLength">Фокусное расстаяние: %1$s</string>
     <string name="iso">ISO: %1$s</string>
     <string name="aboutAuthor">О @%1$s: %2$s</string>
     <string name="no_about">Не рассказал о себе</string>
@@ -50,9 +53,12 @@
         <item>Загружайте любимые снимки и отслеживайте статистику</item>
     </string-array>
 
-    <string name="download">Download</string>
+    <string name="download">Скачать</string>
     <string name="open_with_text">Открыть с помощью…</string>
 
     <string name="image_transaction_name">image_transaction_name</string>
+
+    <string name="map_app_error">У Вас нет приложения для карт</string>
+    <string name="error">Что-то пошло не так</string>
 
 </resources>

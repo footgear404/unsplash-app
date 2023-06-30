@@ -1,4 +1,4 @@
-package com.semenchuk.unsplash.ui.singlePhoto
+package com.semenchuk.unsplash.ui.detailedPhoto
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

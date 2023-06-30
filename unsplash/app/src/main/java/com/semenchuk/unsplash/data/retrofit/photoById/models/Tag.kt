@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class Tags(
+data class Tag(
     @Json(name = "title")
     val title: String
 ): Parcelable

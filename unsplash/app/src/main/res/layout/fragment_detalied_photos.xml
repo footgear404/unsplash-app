@@ -5,25 +5,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.singlePhoto.DetailedPhotosFragment">
+    tools:context=".ui.detailedPhoto.DetailedPhotosFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+
         <include
             android:id="@+id/includedImg"
             layout="@layout/top_of_day_item" />
 
         <LinearLayout
-            android:id="@+id/detailsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:layout_marginTop="10dp"
+                android:id="@+id/detailsProgress"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:indeterminateDrawable="@drawable/custom_progress" />
+
 
             <LinearLayout
+                android:id="@+id/detailsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -32,8 +42,10 @@
                     android:id="@+id/location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_marginVertical="10dp"
                     android:layout_marginStart="20dp"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
                     android:textStyle="bold"
                     app:drawableStartCompat="@drawable/baseline_location_on_24"
                     tools:text="Location, REG" />
@@ -103,9 +115,9 @@
 
 
                     <LinearLayout
-                        android:layout_marginEnd="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
                         android:layout_weight="1"
                         android:orientation="vertical">
 

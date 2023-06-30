@@ -26,7 +26,7 @@ class DetailedPhoto(
     @Json(name = "location")
     override val location: Location,
     @Json(name = "tags")
-    override val tags: List<Tags>,
+    override val tags: List<Tag>,
     @Json(name = "urls")
     override val urls: Urls,
     @Json(name = "user")

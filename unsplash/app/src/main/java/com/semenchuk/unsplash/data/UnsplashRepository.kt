@@ -4,6 +4,7 @@ import androidx.paging.*
 import com.semenchuk.unsplash.AUTH_STATUS
 import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
+import com.semenchuk.unsplash.data.retrofit.like.models.LikeResponse
 import com.semenchuk.unsplash.data.retrofit.photoById.models.DetailedPhoto
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
@@ -31,5 +32,13 @@ class UnsplashRepository(
 
     suspend fun getPhotoById(id: String): Response<DetailedPhoto> {
         return retrofitService.getPhotoById.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
+    }
+
+    suspend fun addLike(id:String): Response<LikeResponse> {
+        return retrofitService.likePhoto.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
+    }
+
+    suspend fun removeLike(id:String): Response<LikeResponse> {
+        return retrofitService.unLikePhoto.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
     }
 }
