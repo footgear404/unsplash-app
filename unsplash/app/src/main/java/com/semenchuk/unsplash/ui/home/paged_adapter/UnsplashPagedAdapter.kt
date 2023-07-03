@@ -1,45 +1,53 @@
 package com.semenchuk.unsplash.ui.home.paged_adapter
 
-import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.semenchuk.unsplash.R
+import com.semenchuk.unsplash.data.retrofit.like.models.Photo
+import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
 import com.semenchuk.unsplash.databinding.PhotoListItemBinding
 import com.semenchuk.unsplash.databinding.TopOfDayItemBinding
-import com.semenchuk.unsplash.entities.PhotoItem
+import com.semenchuk.unsplash.ui.utils.GlideImageHelper
 
 
-class UnsplashPagedAdapter(private val onClick: (PhotoItem) -> Unit) :
-    PagingDataAdapter<PhotoItem, BaseViewHolder<Any>>(PhotosDiffUtilCallback()) {
-    override fun onBindViewHolder(holder: BaseViewHolder<Any>, position: Int) {
+class UnsplashPagedAdapter(
+    private val photoClickListener: (SavedPhotoEntity) -> Unit,
+    private val likeClickListener: (SavedPhotoEntity, Int) -> Unit
+) : PagingDataAdapter<SavedPhotoEntity, BaseViewHolder<Any>>(PhotosDiffUtilCallback()) {
+
+
+    override fun onBindViewHolder(
+        holder: BaseViewHolder<Any>,
+        position: Int,
+    ) {
         val item = getItem(position)
 
         if (item != null) {
-
             holder.bind(item)
-
-            holder.itemView.rootView.setOnClickListener {
-                onClick(item)
-            }
         }
-
 
         if (position == 0) {
             val fullWidthItem =
                 holder.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
             fullWidthItem.isFullSpan = true
+        }
+    }
 
+    override fun onBindViewHolder(
+        holder: BaseViewHolder<Any>,
+        position: Int,
+        payload: MutableList<Any>
+    ) {
+        if (payload.isEmpty()) {
+            super.onBindViewHolder(holder, position, payload)
+        } else {
+            holder.updateLikes(
+                isLike = (payload[0] as Photo).likedByUser,
+                likeCount = (payload[0] as Photo).likes!!
+            )
         }
     }
 
@@ -49,17 +57,6 @@ class UnsplashPagedAdapter(private val onClick: (PhotoItem) -> Unit) :
         } else {
             PHOTO_LIST
         }
-
-//        val itemType = getItem(position)
-//        return when (getItem(position)) {
-//            is UnsplashPhotosItem -> PHOTO_LIST
-//            is UnsplashTopItem -> TOP_OF_DAY
-//
-//            else -> {
-//                throw java.lang.IllegalStateException("ELSE in getItemViewType()")
-//            }
-//        }
-
     }
 
     override fun onCreateViewHolder(
@@ -70,15 +67,15 @@ class UnsplashPagedAdapter(private val onClick: (PhotoItem) -> Unit) :
             TOP_OF_DAY -> TopOfDayViewHolder(
                 TopOfDayItemBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
-                )
+                ), photoClickListener, likeClickListener
             )
             PHOTO_LIST -> PhotoListViewHolder(
                 PhotoListItemBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
-                )
+                ), photoClickListener, likeClickListener
             )
             else -> {
-                throw java.lang.IllegalStateException("ELSE in onCreateViewHolder()")
+                throw java.lang.IllegalStateException("Illegal view type")
             }
         }
     }
@@ -89,116 +86,109 @@ class UnsplashPagedAdapter(private val onClick: (PhotoItem) -> Unit) :
     }
 }
 
-class PhotoListViewHolder(
-    private val binding: PhotoListItemBinding
-) : BaseViewHolder<Any>(binding) {
-
-    override fun bind(item: Any) {
-        val context = binding.root.context
-        item as PhotoItem
-        binding.userName.text = context.resources.getString(R.string.username, item.user?.firstName, item.user?.lastName ?: "")
-        binding.nickname.text = context.resources.getString(R.string.nickname, item.user?.username)
-        binding.likesCount.text = item.likes.toString()
-
-        binding.like.isSelected = item.likedByUser == true
-
-        Glide.with(context)
-            .load(item.urls?.regular)
-            .placeholder(R.drawable.sample_img)
-            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    binding.photoProgress.isVisible = false
-                    return false
-                }
-
-            })
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .error(R.drawable.baseline_error_24)
-            .dontAnimate()
-            .into(binding.backgroundPhoto)
-
-        Glide.with(context).load(item.user?.profileImage?.medium)
-            .into(binding.authorProfileImg)
-    }
-}
-
 class TopOfDayViewHolder(
-    private val binding: TopOfDayItemBinding
+    private val binding: TopOfDayItemBinding,
+    private val photoClickListener: (SavedPhotoEntity) -> Unit,
+    private val likeClickListener: (SavedPhotoEntity, Int) -> Unit
 ) : BaseViewHolder<Any>(binding) {
-    override fun bind(item: Any) {
+
+    private val glideImageHelper = GlideImageHelper()
+
+    override fun bind(item: SavedPhotoEntity) {
         val context = binding.root.context
-        item as PhotoItem
-        binding.header.text = context.resources.getString(R.string.today_in_the_top)
-        binding.userName.text = context.resources.getString(R.string.username, item.user?.firstName, item.user?.lastName ?: "")
-        binding.nickname.text = context.resources.getString(R.string.nickname, item.user?.username)
-        binding.likesCount.text = item.likes.toString()
 
-        binding.like.isSelected = item.likedByUser == true
+        with(binding) {
+            header.text = context.resources.getString(R.string.today_in_the_top)
+            userName.text = context.resources.getString(
+                R.string.username,
+                item.user?.firstName,
+                item.user?.lastName ?: ""
+            )
+            nickname.text =
+                context.resources.getString(R.string.nickname, item.user?.username)
+            likesCount.text = item.likes.toString()
 
-        Glide.with(context)
-            .load(item.urls?.regular)
-            .placeholder(R.drawable.sample_img)
-            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
+            like.isSelected = item.likedByUser == true
 
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    binding.photoProgress.isVisible = false
-                    return false
-                }
+            like.setOnClickListener {
+                likeClickListener(item, layoutPosition)
+            }
+            backgroundPhoto.setOnClickListener {
+                photoClickListener(item)
+            }
 
-            })
-            .error(R.drawable.baseline_error_24)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .dontAnimate()
-            .into(binding.backgroundPhoto)
+            glideImageHelper.setPhoto(
+                context = context, img_url = item.urls?.regular,
+                into = backgroundPhoto
+            )
+            glideImageHelper.setPhoto(
+                context = context, img_url = item.user?.profileImage?.medium,
+                into = authorProfileImg
+            )
+        }
+    }
 
-        Glide.with(context).load(item.user?.profileImage?.medium)
-            .into(binding.authorProfileImg)
+    override fun updateLikes(isLike: Boolean, likeCount: Int) {
+        binding.like.isSelected = isLike
+        binding.likesCount.text = likeCount.toString()
     }
 }
 
+class PhotoListViewHolder(
+    private val binding: PhotoListItemBinding,
+    private val photoClickListener: (SavedPhotoEntity) -> Unit,
+    private val likeClickListener: (SavedPhotoEntity, Int) -> Unit
+) : BaseViewHolder<Any>(binding) {
 
-class PhotosDiffUtilCallback : DiffUtil.ItemCallback<PhotoItem>() {
+    private val glideImageHelper = GlideImageHelper()
+
+    override fun bind(item: SavedPhotoEntity) {
+        with(binding) {
+            val context = root.context
+
+            userName.text = context.resources.getString(
+                R.string.username,
+                item.user?.firstName,
+                item.user?.lastName ?: ""
+            )
+            nickname.text = context.resources.getString(R.string.nickname, item.user?.username)
+            likesCount.text = item.likes.toString()
+
+            like.isSelected = item.likedByUser == true
+
+            like.setOnClickListener {
+                likeClickListener(item, layoutPosition)
+            }
+            backgroundPhoto.setOnClickListener {
+                photoClickListener(item)
+            }
+//            set photo
+            glideImageHelper.setPhoto(
+                context = context, img_url = item.urls?.regular,
+                into = backgroundPhoto
+            )
+//            set avatar
+            glideImageHelper.setPhoto(
+                context = context, img_url = item.user?.profileImage?.medium,
+                into = authorProfileImg
+            )
+        }
+    }
+
+    override fun updateLikes(isLike: Boolean, likeCount: Int) {
+        binding.like.isSelected = isLike
+        binding.likesCount.text = likeCount.toString()
+    }
+}
+
+class PhotosDiffUtilCallback : DiffUtil.ItemCallback<SavedPhotoEntity>() {
     override fun areItemsTheSame(
-        oldItem: PhotoItem,
-        newItem: PhotoItem
-    ): Boolean =
-        oldItem.id == newItem.id
+        oldItem: SavedPhotoEntity,
+        newItem: SavedPhotoEntity
+    ): Boolean = oldItem.id == newItem.id
 
-
-    @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(
-        oldItem: PhotoItem,
-        newItem: PhotoItem
+        oldItem: SavedPhotoEntity,
+        newItem: SavedPhotoEntity
     ): Boolean = oldItem == newItem
 }

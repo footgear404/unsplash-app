@@ -23,7 +23,7 @@ data class UnsplashPhotosItem(
     @Json(name = "height")
     override val height: Int?,
     @Json(name = "id")
-    override val id: String?,
+    override val id: String,
     @Json(name = "liked_by_user")
     override val likedByUser: Boolean,
     @Json(name = "likes")

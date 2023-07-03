@@ -35,7 +35,12 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val pagedAdapter =
-        UnsplashPagedAdapter { item -> onItemClick(item as SavedPhotoEntity) }
+        UnsplashPagedAdapter(
+            photoClickListener = { item -> onPhotoClick(item) },
+            likeClickListener = { item, position ->
+                onLikeClick(item, position)
+            }
+        )
 
     private val viewModel: HomeViewModel by viewModels { App.appComponent.homeViewModelFactory() }
     override fun onCreateView(
@@ -64,6 +69,14 @@ class HomeFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.likeUnlike.collect { payload ->
+                if (payload.second != null) {
+                    pagedAdapter.notifyItemChanged(payload.first, payload.second)
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.message.collect { message ->
                 Snackbar.make(binding.recyclerView, message, Snackbar.LENGTH_LONG)
                     .show()
@@ -79,9 +92,9 @@ class HomeFragment : Fragment() {
                         viewModel.sendMessageInSnack(this@HomeFragment.getString(R.string.searching))
                     }
                     State.Success -> {
-                        viewModel.photos?.onEach {
+                        viewModel.photos.onEach {
                             pagedAdapter.submitData(it)
-                        }?.launchIn(viewLifecycleOwner.lifecycleScope)
+                        }.launchIn(viewLifecycleOwner.lifecycleScope)
                         pagedAdapter.refresh()
                         binding.swipeToRefresh.isRefreshing = false
                     }
@@ -95,20 +108,20 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun onItemClick(it: SavedPhotoEntity) {
-        Log.d("CLICK", "onItemClick: $it")
+    private fun onPhotoClick(it: SavedPhotoEntity) {
+        Log.d("CLICK", "PHOTO: $it")
         val direction = HomeFragmentDirections.actionHomeFragmentToDetailedPhotosFragment(it)
         findNavController().navigate(direction)
     }
 
-    private fun onLikeClick(it: SavedPhotoEntity) {
-        Log.d("CLICK", "onLikeClick: $it")
+    private fun onLikeClick(it: SavedPhotoEntity, position: Int) {
+        Log.d("CLICK", "LIKE: $it")
+        viewModel.setLike(it.id, it.likedByUser, position)
     }
 
     private fun setAdapter() {
         binding.recyclerView.adapter = pagedAdapter
     }
-
 
     private fun setMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {

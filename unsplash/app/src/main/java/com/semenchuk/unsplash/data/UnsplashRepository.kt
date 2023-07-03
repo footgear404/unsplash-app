@@ -1,5 +1,6 @@
 package com.semenchuk.unsplash.data
 
+import android.util.Log
 import androidx.paging.*
 import com.semenchuk.unsplash.AUTH_STATUS
 import com.semenchuk.unsplash.app.App
@@ -34,11 +35,15 @@ class UnsplashRepository(
         return retrofitService.getPhotoById.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
     }
 
-    suspend fun addLike(id:String): Response<LikeResponse> {
+    suspend fun addLike(id:String, likedByUser: Boolean): Response<LikeResponse> {
+        val db = unsplashDatabaseDao.updateLike(id, likedByUser = likedByUser)
+        Log.d("TAG", "addLike: $db")
         return retrofitService.likePhoto.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
     }
 
-    suspend fun removeLike(id:String): Response<LikeResponse> {
+    suspend fun removeLike(id:String, likedByUser: Boolean): Response<LikeResponse> {
+        val db = unsplashDatabaseDao.updateLike(id, likedByUser = likedByUser)
+        Log.d("TAG", "removeLike: $db")
         return retrofitService.unLikePhoto.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
     }
 }

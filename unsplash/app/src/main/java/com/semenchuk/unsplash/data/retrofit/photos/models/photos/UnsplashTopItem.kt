@@ -9,7 +9,7 @@ data class UnsplashTopItem(
     override val createdAt: String?,
     override val description: String?,
     override val height: Int?,
-    override val id: String?,
+    override val id: String,
     override val likedByUser: Boolean,
     override val likes: Int?,
     override val promotedAt: String?,

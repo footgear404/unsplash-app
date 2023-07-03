@@ -17,7 +17,6 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -280,7 +279,6 @@ class DetailedPhotosFragment : Fragment() {
                     dataSource: DataSource?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    binding.includedImg.photoProgress.isVisible = false
                     return false
                 }
 

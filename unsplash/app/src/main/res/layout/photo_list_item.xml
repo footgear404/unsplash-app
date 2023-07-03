@@ -97,15 +97,5 @@
         app:layout_constraintTop_toTopOf="@id/like"
         tools:text="99+" />
 
-    <ProgressBar
-        android:id="@+id/photoProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminateDrawable="@drawable/custom_progress"
-        app:layout_constraintBottom_toBottomOf="@id/background_photo"
-        app:layout_constraintLeft_toLeftOf="@+id/background_photo"
-        app:layout_constraintRight_toRightOf="@+id/background_photo"
-        app:layout_constraintTop_toTopOf="@+id/background_photo" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

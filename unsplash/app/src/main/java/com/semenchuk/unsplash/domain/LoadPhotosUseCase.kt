@@ -19,11 +19,11 @@ class LoadPhotosUseCase(
         return unsplashRepository.getPhotoById(id)
     }
 
-    suspend fun like(id: String): Response<LikeResponse> {
-        return unsplashRepository.addLike(id)
+    suspend fun like(id: String, likedByUser: Boolean): Response<LikeResponse> {
+        return unsplashRepository.addLike(id, likedByUser)
     }
 
-    suspend fun unlike(id: String): Response<LikeResponse> {
-        return unsplashRepository.removeLike(id)
+    suspend fun unlike(id: String, likedByUser: Boolean): Response<LikeResponse> {
+        return unsplashRepository.removeLike(id, likedByUser)
     }
 }
