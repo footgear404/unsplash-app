@@ -23,15 +23,6 @@
             android:baselineAligned="false"
             android:orientation="vertical">
 
-            <ProgressBar
-                android:layout_marginTop="10dp"
-                android:id="@+id/detailsProgress"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:indeterminateDrawable="@drawable/custom_progress" />
-
-
             <LinearLayout
                 android:id="@+id/detailsContainer"
                 android:layout_width="match_parent"

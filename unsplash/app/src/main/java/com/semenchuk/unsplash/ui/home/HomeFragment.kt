@@ -34,12 +34,9 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val pagedAdapter =
-        UnsplashPagedAdapter(
+    private val pagedAdapter = UnsplashPagedAdapter(
             photoClickListener = { item -> onPhotoClick(item) },
-            likeClickListener = { item, position ->
-                onLikeClick(item, position)
-            }
+            likeClickListener = { item, position -> onLikeClick(item, position) }
         )
 
     private val viewModel: HomeViewModel by viewModels { App.appComponent.homeViewModelFactory() }

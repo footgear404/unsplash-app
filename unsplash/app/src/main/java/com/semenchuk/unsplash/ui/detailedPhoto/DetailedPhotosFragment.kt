@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -23,11 +21,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import com.google.android.material.snackbar.Snackbar
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.app.App
@@ -35,6 +28,7 @@ import com.semenchuk.unsplash.data.retrofit.photoById.models.DetailedPhoto
 import com.semenchuk.unsplash.data.retrofit.photoById.models.Tag
 import com.semenchuk.unsplash.databinding.FragmentDetaliedPhotosBinding
 import com.semenchuk.unsplash.domain.utils.State
+import com.semenchuk.unsplash.utils.GlideImageHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -49,10 +43,19 @@ class DetailedPhotosFragment : Fragment() {
     private val launcher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { map ->
             if (map.values.all { it }) {
-                Toast.makeText(requireContext(), "Thank you for trusting us", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.thx_permissions),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
+
             } else {
-                Toast.makeText(requireContext(), "You declined permission", Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.sry_permissions),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             }
         }
@@ -76,7 +79,7 @@ class DetailedPhotosFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setFullSizeImageView()
-        setImage()
+        setImages()
 
         binding.includedImg.like.setOnClickListener {
             viewModel.setLike(args.photoItem.id, binding.includedImg.like.isSelected)
@@ -115,20 +118,17 @@ class DetailedPhotosFragment : Fragment() {
                 when (state) {
                     State.Loading -> {
                         binding.detailsContainer.visibility = View.GONE
-                        binding.detailsProgress.visibility = View.VISIBLE
                     }
                     State.Success -> {
                         setupDetails(viewModel.photo.value!!)
                         binding.detailsContainer.visibility = View.VISIBLE
-                        binding.detailsProgress.visibility = View.GONE
                     }
                     is State.Error -> {
                         binding.detailsContainer.visibility = View.GONE
-                        binding.detailsProgress.visibility = View.VISIBLE
-                        viewModel.sendMessage(state.message)
+                        viewModel.sendMessage("We can`t load details\n" + state.message)
                     }
                     else -> {
-                        viewModel.sendMessage("Else")
+                        viewModel.sendMessage(state.toString())
                     }
                 }
             }
@@ -141,17 +141,22 @@ class DetailedPhotosFragment : Fragment() {
         }
     }
 
-    private fun setImage() {
-        setImageToView(
-            description = "photo",
+    private fun setImages() {
+        GlideImageHelper().setPhoto(
+            description = "Photo",
+            context = requireContext(),
             img_url = args.photoItem.urls!!.regular,
-            view = binding.includedImg.backgroundPhoto
+            blurHash = args.photoItem.blurHash,
+            into = binding.includedImg.backgroundPhoto
         )
-        setImageToView(
-            description = "author photo",
-            img_url = args.photoItem.urls!!.regular,
-            view = binding.includedImg.authorProfileImg
+        GlideImageHelper().setPhoto(
+            description = "Avatar",
+            context = requireContext(),
+            img_url = args.photoItem.author_photo!!,
+            blurHash = args.photoItem.blurHash,
+            into = binding.includedImg.authorProfileImg
         )
+
         binding.includedImg.like.isSelected = args.photoItem.likedByUser == true
         binding.includedImg.userName.text =
             resources.getString(
@@ -168,7 +173,7 @@ class DetailedPhotosFragment : Fragment() {
         viewModel.load(id = args.photoItem.id)
         val layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.WRAP_CONTENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT
+            LinearLayout.LayoutParams.WRAP_CONTENT,
         )
         binding.includedImg.backgroundPhoto.layoutParams = layoutParams
     }
@@ -191,6 +196,7 @@ class DetailedPhotosFragment : Fragment() {
     }
 
     private fun setupDetails(data: DetailedPhoto) {
+
         binding.includedImg.header.text = resources.getString(
             R.string.description, data.description
                 ?: resources.getString(R.string.no_description)
@@ -256,44 +262,6 @@ class DetailedPhotosFragment : Fragment() {
         return result
     }
 
-    private fun setImageToView(description: String, img_url: String, view: ImageView) {
-        Log.d("DF", "setImg to: $description")
-        Glide.with(this@DetailedPhotosFragment)
-            .load(img_url)
-            .placeholder(R.drawable.sample_img)
-            .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-            .listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(
-                    e: GlideException?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-
-                override fun onResourceReady(
-                    resource: Drawable?,
-                    model: Any?,
-                    target: Target<Drawable>?,
-                    dataSource: DataSource?,
-                    isFirstResource: Boolean
-                ): Boolean {
-                    return false
-                }
-
-            })
-            .error(R.drawable.baseline_error_24)
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .dontAnimate()
-            .into(view)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
     private fun checkPermissions(): Boolean {
         isAllGranted = REQUEST_PERMISSIONS.all { permission ->
             ContextCompat.checkSelfPermission(this.requireContext(), permission) ==
@@ -313,5 +281,10 @@ class DetailedPhotosFragment : Fragment() {
                 add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
         }.toTypedArray()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

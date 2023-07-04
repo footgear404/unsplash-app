@@ -28,7 +28,7 @@ data class SavedPhotoEntity(
     val comments_count: String,
     override val altDescription: String?,
     @ColumnInfo(name = "blurHash")
-    override val blurHash: String?,
+    override val blurHash: String,
     override val color: String?,
     override val createdAt: String?,
     @ColumnInfo(name = "user_description")
@@ -36,9 +36,9 @@ data class SavedPhotoEntity(
     @ColumnInfo(name = "height")
     override val height: Int?,
     @ColumnInfo(name = "likedByUser")
-    override val likedByUser: Boolean,
+    override var likedByUser: Boolean,
     @ColumnInfo(name = "likes")
-    override val likes: Int?,
+    override var likes: Int?,
     override val promotedAt: String?,
     override val updatedAt: String?,
     @Embedded override val urls: Urls?,

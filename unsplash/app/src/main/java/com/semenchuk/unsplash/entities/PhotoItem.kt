@@ -5,14 +5,14 @@ import com.semenchuk.unsplash.data.retrofit.photos.models.photos.User
 
 interface PhotoItem {
     val altDescription: String?
-    val blurHash: String?
+    val blurHash: String
     val color: String?
     val createdAt: String?
     val description: String?
     val height: Int?
     val id: String
-    val likedByUser: Boolean
-    val likes: Int?
+    var likedByUser: Boolean
+    var likes: Int?
     val promotedAt: String?
     val updatedAt: String?
     val urls: Urls?

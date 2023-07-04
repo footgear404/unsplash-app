@@ -1,6 +1,7 @@
-package com.semenchuk.unsplash.ui.utils
+package com.semenchuk.unsplash.utils
 
 import android.content.Context
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -12,11 +13,13 @@ import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.semenchuk.unsplash.R
 
-class GlideImageHelper() {
-    fun setPhoto(context: Context, img_url: String?, into: ImageView, isAvatar: Boolean = false) {
+class GlideImageHelper {
+    fun setPhoto(context: Context, img_url: String?, blurHash: String, into: ImageView, description: String = "", isAvatar: Boolean = false) {
+
+        val blurHashPlaceholder: Drawable = BitmapDrawable(context.resources, BlurHashDecoder.decode(blurHash, 20, 12))
         Glide.with(context)
             .load(img_url)
-            .placeholder(PLACEHOLDER)
+            .placeholder(blurHashPlaceholder)
             .override(SIZE_ORIGINAL, SIZE_ORIGINAL)
             .listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(

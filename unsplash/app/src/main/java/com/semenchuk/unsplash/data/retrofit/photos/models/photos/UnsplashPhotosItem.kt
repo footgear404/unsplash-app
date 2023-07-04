@@ -13,7 +13,7 @@ data class UnsplashPhotosItem(
     @Json(name = "alt_description")
     override val altDescription: String?,
     @Json(name = "blur_hash")
-    override val blurHash: String?,
+    override val blurHash: String,
     @Json(name = "color")
     override val color: String?,
     @Json(name = "created_at")
@@ -25,9 +25,9 @@ data class UnsplashPhotosItem(
     @Json(name = "id")
     override val id: String,
     @Json(name = "liked_by_user")
-    override val likedByUser: Boolean,
+    override var likedByUser: Boolean,
     @Json(name = "likes")
-    override val likes: Int?,
+    override var likes: Int?,
     @Json(name = "promoted_at")
     override val promotedAt: String?,
     @Json(name = "updated_at")

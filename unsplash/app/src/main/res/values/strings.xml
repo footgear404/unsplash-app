@@ -61,5 +61,7 @@
 
     <string name="map_app_error">Not found app with maps</string>
     <string name="error">Something went wrong</string>
+    <string name="thx_permissions">Tnks! Try download now</string>
+    <string name="sry_permissions">Sry, we not have permissions</string>
 
 </resources>

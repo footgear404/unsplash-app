@@ -36,14 +36,14 @@ class UnsplashRepository(
     }
 
     suspend fun addLike(id:String, likedByUser: Boolean): Response<LikeResponse> {
-        val db = unsplashDatabaseDao.updateLike(id, likedByUser = likedByUser)
-        Log.d("TAG", "addLike: $db")
+        val db = unsplashDatabaseDao.updateLike(id, likedByUser = !likedByUser)
+        Log.d("DB", "addLike to db: ${!likedByUser} status-code($db)")
         return retrofitService.likePhoto.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
     }
 
     suspend fun removeLike(id:String, likedByUser: Boolean): Response<LikeResponse> {
-        val db = unsplashDatabaseDao.updateLike(id, likedByUser = likedByUser)
-        Log.d("TAG", "removeLike: $db")
+        val db = unsplashDatabaseDao.updateLike(id, likedByUser = !likedByUser)
+        Log.d("DB", "removeLike from db: ${!likedByUser} status-code($db)")
         return retrofitService.unLikePhoto.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
     }
 }

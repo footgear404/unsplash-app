@@ -86,11 +86,11 @@ class DetailedPhotosViewModel(
     fun setLike(id: String, isLiked: Boolean) {
         viewModelScope.launch {
             if (isLiked) {
-                val result = loadPhotosUseCase.unlike(id, isLiked).body()
+                val result = loadPhotosUseCase.unlike(id, true).body()
                 Log.d("LIKE", "$id is liked: ${result?.photo?.likedByUser}")
                 _likeUnlike.send(result?.photo)
             } else {
-                val result = loadPhotosUseCase.like(id, isLiked).body()
+                val result = loadPhotosUseCase.like(id, false).body()
                 Log.d("LIKE", "$id is liked: ${result?.photo?.likedByUser}")
                 _likeUnlike.send(result?.photo)
             }
