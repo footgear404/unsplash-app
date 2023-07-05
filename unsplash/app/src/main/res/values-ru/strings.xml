@@ -25,6 +25,7 @@
     <string name="details">Детали</string>
     <string name="profile">Профиль</string>
     <string name="search">что будем искать?</string>
+    <string name="logout">Выход</string>
     <string name="searching">Загружаем фото: %1$s</string>
     <string name="no_internet">Нет соединения с интернетом</string>
 

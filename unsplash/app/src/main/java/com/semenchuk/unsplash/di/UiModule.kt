@@ -1,10 +1,13 @@
 package com.semenchuk.unsplash.di
 
 import com.semenchuk.unsplash.domain.LoadPhotosUseCase
-import com.semenchuk.unsplash.ui.home.HomeViewModel
-import com.semenchuk.unsplash.ui.home.HomeViewModelFactory
+import com.semenchuk.unsplash.domain.LoadUserProfileUseCase
 import com.semenchuk.unsplash.ui.detailedPhoto.DetailedPhotosViewModel
 import com.semenchuk.unsplash.ui.detailedPhoto.DetailedPhotosViewModelFactory
+import com.semenchuk.unsplash.ui.home.HomeViewModel
+import com.semenchuk.unsplash.ui.home.HomeViewModelFactory
+import com.semenchuk.unsplash.ui.profile.ProfileViewModel
+import com.semenchuk.unsplash.ui.profile.ProfileViewModelFactory
 import dagger.Module
 import dagger.Provides
 
@@ -36,5 +39,18 @@ class UiModule {
     ): DetailedPhotosViewModelFactory {
         return DetailedPhotosViewModelFactory(loadPhotosUseCase)
     }
+
+    @Provides
+    fun provideProfileViewModel(loadUserProfileUseCase: LoadUserProfileUseCase): ProfileViewModel {
+        return ProfileViewModel(loadUserProfileUseCase)
+    }
+
+    @Provides
+    fun provideProfileViewModelFactory(
+        loadUserProfileUseCase: LoadUserProfileUseCase
+    ): ProfileViewModelFactory {
+        return ProfileViewModelFactory(loadUserProfileUseCase)
+    }
+
 }
 

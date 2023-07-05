@@ -132,7 +132,6 @@ class HomeFragment : Fragment() {
                 setSearchViewConfigs(searchView)
 
                 enableOnBackPressedCallBack(searchView = searchView)
-
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {

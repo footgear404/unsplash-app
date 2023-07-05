@@ -4,6 +4,7 @@ import com.semenchuk.unsplash.data.retrofit.like.LikePhoto
 import com.semenchuk.unsplash.data.retrofit.like.UnLikePhoto
 import com.semenchuk.unsplash.data.retrofit.photoById.PhotoById
 import com.semenchuk.unsplash.data.retrofit.photos.GetPhotos
+import com.semenchuk.unsplash.data.retrofit.profile.UserProfile
 import com.semenchuk.unsplash.data.retrofit.searchPhotos.SearchPhotos
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -24,6 +25,8 @@ class RetrofitService {
     val likePhoto: LikePhoto = retrofit.create(LikePhoto::class.java)
 
     val unLikePhoto: UnLikePhoto = retrofit.create(UnLikePhoto::class.java)
+
+    val userProfile: UserProfile = retrofit.create(UserProfile::class.java)
 
 
     companion object {

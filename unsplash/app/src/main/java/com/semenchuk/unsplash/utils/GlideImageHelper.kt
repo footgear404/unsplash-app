@@ -14,9 +14,18 @@ import com.bumptech.glide.request.target.Target.SIZE_ORIGINAL
 import com.semenchuk.unsplash.R
 
 class GlideImageHelper {
-    fun setPhoto(context: Context, img_url: String?, blurHash: String, into: ImageView, description: String = "", isAvatar: Boolean = false) {
+    fun setPhoto(
+        context: Context,
+        img_url: String?,
+        blurHash: String,
+        into: ImageView,
+        description: String = "",
+        isAvatar: Boolean = false
+    ) {
 
-        val blurHashPlaceholder: Drawable = BitmapDrawable(context.resources, BlurHashDecoder.decode(blurHash, 20, 12))
+        val blurHashPlaceholder: Drawable =
+            BitmapDrawable(context.resources, BlurHashDecoder.decode(blurHash, 20, 12))
+
         Glide.with(context)
             .load(img_url)
             .placeholder(blurHashPlaceholder)

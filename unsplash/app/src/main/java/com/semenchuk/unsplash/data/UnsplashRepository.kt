@@ -7,6 +7,7 @@ import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
 import com.semenchuk.unsplash.data.retrofit.like.models.LikeResponse
 import com.semenchuk.unsplash.data.retrofit.photoById.models.DetailedPhoto
+import com.semenchuk.unsplash.data.retrofit.profile.models.Me
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
 import retrofit2.Response
@@ -45,5 +46,9 @@ class UnsplashRepository(
         val db = unsplashDatabaseDao.updateLike(id, likedByUser = !likedByUser)
         Log.d("DB", "removeLike from db: ${!likedByUser} status-code($db)")
         return retrofitService.unLikePhoto.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
+    }
+
+    suspend fun getUserProfile(): Response<Me> {
+        return retrofitService.userProfile.send("Bearer ${sp.getString(AUTH_STATUS, null)}")
     }
 }

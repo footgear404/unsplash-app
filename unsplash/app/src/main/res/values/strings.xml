@@ -26,6 +26,7 @@
     <string name="profile">Profile</string>
     <string name="details">Details</string>
     <string name="search">What are we looking for?</string>
+    <string name="logout">Logout</string>
     <string name="searching">Loading photos: %1$s</string>
     <string name="no_internet">No internet connection</string>
 

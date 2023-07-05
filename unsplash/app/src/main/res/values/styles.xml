@@ -1,9 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="DetailedText" >
+    <style name="DetailedText">
         <item name="android:textSize">10sp</item>
         <item name="android:layout_marginStart">20dp</item>
         <item name="android:layout_marginEnd">20dp</item>
+    </style>
+
+    <style name="authorImg" >
+        <item name="android:layout_width">35dp</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:padding">3dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/accent</item>
+        <item name="shapeAppearanceOverlay">@style/roundedImage</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:contentDescription">"@string/author_image_description"</item>
+    </style>
+
+    <style name="userName">
+        <item name="android:layout_marginStart">2dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:shadowColor">@color/black_700</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">5</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="nickName">
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:shadowColor">@color/black_700</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">5</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 </resources>
