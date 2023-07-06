@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.databinding.FragmentProfileBinding
+import com.semenchuk.unsplash.utils.GlideImageHelper
 import kotlinx.coroutines.launch
 
 
@@ -45,14 +46,17 @@ class ProfileFragment : Fragment() {
                 binding.location.text = it?.location
                 binding.email.text = it?.email
                 binding.authorDescription.text = it?.bio
+                GlideImageHelper()
+                    .setPhoto(
+                        context = requireContext(),
+                        img_url = it?.profileImage?.large,
+                        into = binding.authorProfileImg,
+                        blurHash = ""
+                    )
             }
         }
 
-
-
         setMenu()
-
-
     }
 
     private fun setMenu() {

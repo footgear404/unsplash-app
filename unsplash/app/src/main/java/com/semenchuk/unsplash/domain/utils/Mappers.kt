@@ -1,11 +1,11 @@
 package com.semenchuk.unsplash.domain.utils
 
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
-import com.semenchuk.unsplash.entities.PhotoItem
+import com.semenchuk.unsplash.entities.PhotoEntity
 
 class Mappers {
     companion object {
-        fun toSavedPhotoEntity(unsplashPhotosItem: List<PhotoItem>): List<SavedPhotoEntity> {
+        fun toSavedPhotoEntity(unsplashPhotosItem: List<PhotoEntity>): List<SavedPhotoEntity> {
             val savedPhotoEntityList = mutableListOf<SavedPhotoEntity>()
             unsplashPhotosItem.forEach {
                 savedPhotoEntityList.add(

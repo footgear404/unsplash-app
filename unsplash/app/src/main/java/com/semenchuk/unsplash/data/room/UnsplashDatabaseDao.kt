@@ -3,6 +3,7 @@ package com.semenchuk.unsplash.data.room
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
+import com.semenchuk.unsplash.data.room.profile.SavedProfile
 
 @Dao
 interface UnsplashDatabaseDao {
@@ -18,6 +19,9 @@ interface UnsplashDatabaseDao {
 
     @Query("UPDATE saved_photo SET likedByUser = :likedByUser WHERE id = :id")
     suspend fun updateLike(id: String, likedByUser: Boolean): Int
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveProfile(profile: SavedProfile)
 
     @Transaction
     suspend fun refresh(saved_photos: List<SavedPhotoEntity>) {

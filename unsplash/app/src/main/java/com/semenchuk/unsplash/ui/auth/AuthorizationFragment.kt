@@ -14,8 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.semenchuk.unsplash.AUTH_STATUS
-import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.R
+import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.databinding.FragmentAuthorizationBinding
 import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
@@ -23,7 +23,7 @@ import net.openid.appauth.AuthorizationResponse
 
 class AuthorizationFragment : Fragment() {
 
-    private val viewModel: AuthViewModel by viewModels()
+    private val viewModel: AuthViewModel by viewModels { App.appComponent.auth() }
     private var _binding: FragmentAuthorizationBinding? = null
     private val binding get() = _binding!!
 
@@ -88,6 +88,7 @@ class AuthorizationFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.authSuccessFlow.collect {
+                viewModel
                 findNavController().navigate(R.id.action_authorizationFragment_to_homeFragment)
             }
         }

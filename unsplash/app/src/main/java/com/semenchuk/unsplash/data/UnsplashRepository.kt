@@ -7,9 +7,10 @@ import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
 import com.semenchuk.unsplash.data.retrofit.like.models.LikeResponse
 import com.semenchuk.unsplash.data.retrofit.photoById.models.DetailedPhoto
-import com.semenchuk.unsplash.data.retrofit.profile.models.Me
+import com.semenchuk.unsplash.data.retrofit.profile.models.ProfileDto
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
+import com.semenchuk.unsplash.data.room.photos.SavedPhotosRemoteMediator
 import retrofit2.Response
 
 @OptIn(ExperimentalPagingApi::class)
@@ -48,7 +49,7 @@ class UnsplashRepository(
         return retrofitService.unLikePhoto.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
     }
 
-    suspend fun getUserProfile(): Response<Me> {
+    suspend fun getUserProfile(): Response<ProfileDto> {
         return retrofitService.userProfile.send("Bearer ${sp.getString(AUTH_STATUS, null)}")
     }
 }

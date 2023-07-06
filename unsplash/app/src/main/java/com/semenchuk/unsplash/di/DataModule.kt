@@ -6,12 +6,14 @@ import android.content.SharedPreferences
 import androidx.paging.ExperimentalPagingApi
 import androidx.room.Room
 import com.semenchuk.unsplash.data.UnsplashRepository
+import com.semenchuk.unsplash.data.appAuth.AuthRepository
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
 import com.semenchuk.unsplash.data.room.RoomRepository
 import com.semenchuk.unsplash.data.room.UnsplashDatabase
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
 import dagger.Module
 import dagger.Provides
+import net.openid.appauth.AuthorizationService
 import javax.inject.Singleton
 
 
@@ -32,6 +34,17 @@ class DataModule {
             UnsplashDatabase::class.java,
             name = "app_db"
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(): AuthRepository{
+        return AuthRepository()
+    }
+    @Provides
+    @Singleton
+    fun provideAuthorizationService(application: Application): AuthorizationService {
+        return AuthorizationService(application)
     }
 
     @Provides

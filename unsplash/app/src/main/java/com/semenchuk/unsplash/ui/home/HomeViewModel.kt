@@ -41,7 +41,7 @@ class HomeViewModel(
             try {
                 _photos =
                     loadPhotosUseCase.getPhotos(query = query).flow
-//                .map { pagingData -> pagingData as PagingData<PhotoItem> }
+//                .map { pagingData -> pagingData as PagingData<PhotoEntity> }
                 _state.value = State.Success
             } catch (e: java.lang.Exception) {
                 _state.value = State.Error(message = e.message.toString())

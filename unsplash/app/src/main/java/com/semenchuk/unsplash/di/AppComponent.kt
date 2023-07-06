@@ -2,6 +2,7 @@ package com.semenchuk.unsplash.di
 
 import android.app.Application
 import android.content.SharedPreferences
+import com.semenchuk.unsplash.ui.auth.AuthViewModelFactory
 import com.semenchuk.unsplash.ui.detailedPhoto.DetailedPhotosViewModelFactory
 import com.semenchuk.unsplash.ui.home.HomeViewModelFactory
 import com.semenchuk.unsplash.ui.profile.ProfileViewModelFactory
@@ -33,4 +34,6 @@ interface AppComponent {
     fun profileViewModelFactory(): ProfileViewModelFactory
 
     fun sharedPrefs(): SharedPreferences
+
+    fun auth(): AuthViewModelFactory
 }

@@ -2,14 +2,14 @@ package com.semenchuk.unsplash.data.retrofit.photos.models.photos
 
 
 import android.os.Parcelable
-import com.semenchuk.unsplash.entities.PhotoItem
+import com.semenchuk.unsplash.entities.PhotoEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 @JsonClass(generateAdapter = true)
-data class UnsplashPhotosItem(
+data class UnsplashPhotosEntity(
     @Json(name = "alt_description")
     override val altDescription: String?,
     @Json(name = "blur_hash")
@@ -38,4 +38,4 @@ data class UnsplashPhotosItem(
     override val user: User?,
     @Json(name = "width")
     override val width: Int?
-) : PhotoItem, Parcelable
+) : PhotoEntity, Parcelable

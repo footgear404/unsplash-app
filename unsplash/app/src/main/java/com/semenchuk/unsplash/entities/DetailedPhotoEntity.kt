@@ -6,7 +6,7 @@ import com.semenchuk.unsplash.data.retrofit.photoById.models.Tag
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.Urls
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.User
 
-interface DetailedPhotoItem {
+interface DetailedPhotoEntity {
     val id: String
     val downloads: Int
     val likes: Int

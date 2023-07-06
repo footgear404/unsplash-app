@@ -3,7 +3,7 @@ package com.semenchuk.unsplash.data.retrofit.photoById.models
 import android.os.Parcelable
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.Urls
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.User
-import com.semenchuk.unsplash.entities.DetailedPhotoItem
+import com.semenchuk.unsplash.entities.DetailedPhotoEntity
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
@@ -31,4 +31,4 @@ class DetailedPhoto(
     override val urls: Urls,
     @Json(name = "user")
     override val user: User
-) : DetailedPhotoItem, Parcelable
+) : DetailedPhotoEntity, Parcelable

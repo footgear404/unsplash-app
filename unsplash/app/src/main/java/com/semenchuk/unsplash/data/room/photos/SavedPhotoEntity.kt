@@ -7,7 +7,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.Urls
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.User
-import com.semenchuk.unsplash.entities.PhotoItem
+import com.semenchuk.unsplash.entities.PhotoEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -45,4 +45,4 @@ data class SavedPhotoEntity(
     @Embedded override val user: User?,
     @ColumnInfo(name = "width")
     override val width: Int?,
-): PhotoItem, Parcelable
+): PhotoEntity, Parcelable

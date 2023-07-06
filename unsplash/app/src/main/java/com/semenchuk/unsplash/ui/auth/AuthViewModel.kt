@@ -7,8 +7,8 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.semenchuk.unsplash.R
-import com.semenchuk.unsplash.data.appAuth.AuthRepository
 import com.semenchuk.unsplash.data.appAuth.models.TokensModel
+import com.semenchuk.unsplash.domain.AuthUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,10 +19,13 @@ import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.TokenRequest
 
-class AuthViewModel(application: Application) : AndroidViewModel(application) {
+class AuthViewModel(
+    application: Application,
+    authUseCase: AuthUseCase
+) : AndroidViewModel(application) {
 
-    private val authRepository = AuthRepository()
-    private val authService: AuthorizationService = AuthorizationService(getApplication())
+    private val authRepository = authUseCase.getAuthRepository()
+    private val authService: AuthorizationService = authUseCase.getAuthService(application)
 
     private val openAuthPageEventChannel = Channel<Intent>(Channel.BUFFERED)
     private val toastEventChannel = Channel<Int>(Channel.BUFFERED)

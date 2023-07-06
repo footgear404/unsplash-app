@@ -1,7 +1,7 @@
 package com.semenchuk.unsplash.entities
 
-interface ResultOfSearchItem {
+interface ResultOfSearchEntity {
     val total: Int
     val totalPages: Int
-    val results: List<PhotoItem>
+    val results: List<PhotoEntity>
 }

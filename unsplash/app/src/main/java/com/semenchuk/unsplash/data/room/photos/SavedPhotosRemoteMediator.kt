@@ -1,4 +1,4 @@
-package com.semenchuk.unsplash.data
+package com.semenchuk.unsplash.data.room.photos
 
 import android.util.Log
 import androidx.paging.ExperimentalPagingApi
@@ -9,7 +9,6 @@ import com.semenchuk.unsplash.AUTH_STATUS
 import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
-import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
 import com.semenchuk.unsplash.domain.utils.Mappers
 
 @ExperimentalPagingApi

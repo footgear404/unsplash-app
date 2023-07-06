@@ -3,7 +3,7 @@ package com.semenchuk.unsplash.entities
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.Urls
 import com.semenchuk.unsplash.data.retrofit.photos.models.photos.User
 
-interface PhotoItem {
+interface PhotoEntity {
     val altDescription: String?
     val blurHash: String
     val color: String?

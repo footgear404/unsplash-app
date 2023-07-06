@@ -12,8 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -29,6 +27,7 @@ import com.semenchuk.unsplash.data.retrofit.photoById.models.Tag
 import com.semenchuk.unsplash.databinding.FragmentDetaliedPhotosBinding
 import com.semenchuk.unsplash.domain.utils.State
 import com.semenchuk.unsplash.utils.GlideImageHelper
+import com.semenchuk.unsplash.utils.permissionLauncher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -40,25 +39,7 @@ class DetailedPhotosFragment : Fragment() {
     private val args by navArgs<DetailedPhotosFragmentArgs>()
     private val viewModel: DetailedPhotosViewModel by viewModels { App.appComponent.detailedPhotosViewModelFactory() }
     private var isAllGranted = false
-    private val launcher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { map ->
-            if (map.values.all { it }) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.thx_permissions),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.sry_permissions),
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-        }
+    private val permissionCheck = this.permissionLauncher()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +90,7 @@ class DetailedPhotosFragment : Fragment() {
                     }
                 }
             } else {
-                launcher.launch(REQUEST_PERMISSIONS)
+                permissionCheck.launch(REQUEST_PERMISSIONS)
             }
         }
 
