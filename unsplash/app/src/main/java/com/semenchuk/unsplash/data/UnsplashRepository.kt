@@ -11,6 +11,7 @@ import com.semenchuk.unsplash.data.retrofit.profile.models.ProfileDto
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
 import com.semenchuk.unsplash.data.room.photos.SavedPhotosRemoteMediator
+import com.semenchuk.unsplash.data.room.profile.SavedProfile
 import retrofit2.Response
 
 @OptIn(ExperimentalPagingApi::class)
@@ -51,5 +52,13 @@ class UnsplashRepository(
 
     suspend fun getUserProfile(): Response<ProfileDto> {
         return retrofitService.userProfile.send("Bearer ${sp.getString(AUTH_STATUS, null)}")
+    }
+
+    suspend fun saveProfile(profile: SavedProfile) {
+        unsplashDatabaseDao.saveProfile(profile)
+    }
+
+    suspend fun getFromDb(): List<SavedProfile> {
+        return unsplashDatabaseDao.getProfile()
     }
 }

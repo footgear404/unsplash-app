@@ -18,9 +18,9 @@ fun Fragment.toast(message: String) {
 fun Fragment.permissionLauncher(): ActivityResultLauncher<Array<String>> {
     return registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { map ->
         if (map.values.all { it }) {
-            this.toast(R.string.thx_permissions)
+            this.toast(R.string.thx_message_permissions)
         } else {
-            this.toast(R.string.sry_permissions)
+            this.toast(R.string.sry_message_permissions)
         }
     }
 }

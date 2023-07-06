@@ -1,9 +1,11 @@
 package com.semenchuk.unsplash.domain.utils
 
+import com.semenchuk.unsplash.data.retrofit.profile.models.ProfileDto
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
+import com.semenchuk.unsplash.data.room.profile.SavedProfile
 import com.semenchuk.unsplash.entities.PhotoEntity
 
-class Mappers {
+class Mapper {
     companion object {
         fun toSavedPhotoEntity(unsplashPhotosItem: List<PhotoEntity>): List<SavedPhotoEntity> {
             val savedPhotoEntityList = mutableListOf<SavedPhotoEntity>()
@@ -33,6 +35,30 @@ class Mappers {
                 )
             }
             return savedPhotoEntityList
+        }
+
+        fun profileDtoToSavedProfile(profile: ProfileDto): SavedProfile {
+            return SavedProfile(
+                id = profile.id,
+                bio = profile.bio,
+                downloads = profile.downloads,
+                email = profile.email,
+                firstName = profile.firstName,
+                followedByUser = profile.followedByUser,
+                instagramUsername = profile.instagramUsername,
+                lastName = profile.lastName,
+                links = profile.links,
+                location = profile.location,
+                portfolioUrl = profile.portfolioUrl,
+                totalCollections = profile.totalCollections,
+                totalLikes = profile.totalLikes,
+                totalPhotos = profile.totalPhotos,
+                twitterUsername = profile.twitterUsername,
+                updatedAt = profile.updatedAt,
+                uploadsRemaining = profile.uploadsRemaining,
+                username = profile.username,
+                profileImage = profile.profileImage
+            )
         }
     }
 }

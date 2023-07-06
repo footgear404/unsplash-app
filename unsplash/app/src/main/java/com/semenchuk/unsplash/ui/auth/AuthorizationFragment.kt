@@ -88,7 +88,7 @@ class AuthorizationFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.authSuccessFlow.collect {
-                viewModel
+                viewModel.getProfile()
                 findNavController().navigate(R.id.action_authorizationFragment_to_homeFragment)
             }
         }

@@ -21,12 +21,14 @@ class ProfileViewModel(private val loadUserProfileUseCase: LoadUserProfileUseCas
     private fun getProfile() {
         viewModelScope.launch {
             try {
-                val result = loadUserProfileUseCase.getProfile()
-                if (result.isSuccessful) {
-                    _profile.value = result.body()
-                } else {
-                    Log.d("PROFILE", "getProfile: ${result.message()}")
-                }
+//                val result = loadUserProfileUseCase.getProfile()
+//                val result = loadUserProfileUseCase.getProfile()
+                Log.d("DB", "getProfile: ${loadUserProfileUseCase.check()}")
+//                if (result.isSuccessful) {
+//                    _profile.value = result.body()
+//                } else {
+//                    Log.d("PROFILE", "getProfile: ${result.message()}")
+//                }
             } catch (e: Exception) {
                 Log.d("PROFILE", "getProfile: $e")
             }

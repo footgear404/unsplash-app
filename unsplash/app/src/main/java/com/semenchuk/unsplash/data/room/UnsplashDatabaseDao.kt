@@ -23,6 +23,9 @@ interface UnsplashDatabaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveProfile(profile: SavedProfile)
 
+    @Query("SELECT * FROM saved_profile")
+    suspend fun getProfile(): List<SavedProfile>
+
     @Transaction
     suspend fun refresh(saved_photos: List<SavedPhotoEntity>) {
         clear()

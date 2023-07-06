@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.data.appAuth.models.TokensModel
 import com.semenchuk.unsplash.domain.AuthUseCase
+import com.semenchuk.unsplash.domain.LoadUserProfileUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +22,8 @@ import net.openid.appauth.TokenRequest
 
 class AuthViewModel(
     application: Application,
-    authUseCase: AuthUseCase
+    authUseCase: AuthUseCase,
+    private val loadUserProfileUseCase: LoadUserProfileUseCase
 ) : AndroidViewModel(application) {
 
     private val authRepository = authUseCase.getAuthRepository()
@@ -83,6 +85,16 @@ class AuthViewModel(
         )
         openAuthPageEventChannel.trySendBlocking(openAuthPageIntent)
         Log.d("TAG", "openLoginPage (authRequest): ${authRequest.toUri()}")
+    }
+
+    fun getProfile() {
+        viewModelScope.launch {
+            try {
+                Log.d("PROFILE", "getProfile: ${loadUserProfileUseCase.getProfile().isSuccessful}")
+            } catch (e: Exception) {
+                Log.d("PROFILE", "getProfile: $e")
+            }
+        }
     }
 
     override fun onCleared() {

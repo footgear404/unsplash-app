@@ -9,7 +9,7 @@ import com.semenchuk.unsplash.AUTH_STATUS
 import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
-import com.semenchuk.unsplash.domain.utils.Mappers
+import com.semenchuk.unsplash.domain.utils.Mapper
 
 @ExperimentalPagingApi
 class SavedPhotosRemoteMediator(
@@ -70,7 +70,7 @@ class SavedPhotosRemoteMediator(
                 page = page,
                 per_page = PAGE_SIZE
             )
-            return response.body()?.let { Mappers.toSavedPhotoEntity(it) }
+            return response.body()?.let { Mapper.toSavedPhotoEntity(it) }
         } else {
 //            Log.d("TAG", "fetchPhotos: $query")
             val response = retrofitService.searchPhotos.send(
@@ -80,7 +80,7 @@ class SavedPhotosRemoteMediator(
                 per_page = PAGE_SIZE
             )
 //            Log.d("TAG", "query: $response")
-            return response.body()?.results.let { Mappers.toSavedPhotoEntity(it!!) }
+            return response.body()?.results.let { Mapper.toSavedPhotoEntity(it!!) }
         }
     }
 

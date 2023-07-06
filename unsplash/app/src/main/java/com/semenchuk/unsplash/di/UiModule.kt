@@ -59,17 +59,19 @@ class UiModule {
     @Provides
     fun provideAuthViewModel(
         application: Application,
-        authUseCase: AuthUseCase
+        authUseCase: AuthUseCase,
+        loadUserProfileUseCase: LoadUserProfileUseCase
     ): AuthViewModel {
-        return AuthViewModel(application, authUseCase)
+        return AuthViewModel(application, authUseCase, loadUserProfileUseCase)
     }
 
     @Provides
     fun provideAuthViewModelFactory(
         application: Application,
-        authUseCase: AuthUseCase
+        authUseCase: AuthUseCase,
+        loadUserProfileUseCase: LoadUserProfileUseCase
     ): AuthViewModelFactory {
-        return AuthViewModelFactory(application, authUseCase)
+        return AuthViewModelFactory(application, authUseCase, loadUserProfileUseCase)
     }
 
 }
