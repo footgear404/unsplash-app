@@ -58,7 +58,6 @@ object AppAuth {
                 when {
                     response != null -> {
                         Log.d("TAG", "performTokenRequestSuspend: $response")
-                        //получение токена произошло успешно
                         val tokens = TokensModel(
                             access_token = response.accessToken.orEmpty(),
                             token_type = response.tokenType.orEmpty(),
@@ -66,7 +65,6 @@ object AppAuth {
                         )
                         continuation.resumeWith(Result.success(tokens))
                     }
-                    //получение токенов произошло неуспешно, показываем ошибку
                     ex != null -> {
                         continuation.resumeWith(Result.failure(ex))
                         Log.d("TAG", "performTokenRequestSuspend: ${ex.errorDescription}")

@@ -15,8 +15,6 @@ import com.google.android.material.internal.ContextUtils.getActivity
 import com.semenchuk.unsplash.databinding.ActivityMainBinding
 
 
-const val AUTH_STATUS = "AUTH_STATUS"
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

@@ -13,7 +13,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.semenchuk.unsplash.AUTH_STATUS
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.databinding.FragmentAuthorizationBinding
@@ -30,10 +29,6 @@ class AuthorizationFragment : Fragment() {
     //    private var _getPrefs: SharedPreferences? = null
 //    private val getPrefs get() = _getPrefs!!
     private val sp = App.appComponent.sharedPrefs()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
 
     private val getAuthResponse =
@@ -53,8 +48,6 @@ class AuthorizationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val tokenSharedPrefs = sp.edit()
-
         val authBtn: Button = view.findViewById(R.id.btnAuth)
 
         authBtn.setOnClickListener {
@@ -62,34 +55,36 @@ class AuthorizationFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.loadingFlow.collect {
+            viewModel.loadingMutableStateFlow.collect {
                 updateIsLoading(it)
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.token.collect {
-                tokenSharedPrefs.putString(AUTH_STATUS, it.access_token)
-                tokenSharedPrefs.apply()
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.authToastFlow.collect {
+            viewModel.toastEventChannel.collect {
                 Snackbar.make(authBtn, it, Snackbar.LENGTH_SHORT).show()
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.openAuthPageFlow.collect {
+            viewModel.openAuthPageEventChannel.collect {
                 openAuthPage(it)
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.authSuccessFlow.collect {
-                viewModel.getProfile()
-                findNavController().navigate(R.id.action_authorizationFragment_to_homeFragment)
+            viewModel.authSuccessEventChannel.collect {
+                viewModel.saveProfileToDb()
+//                findNavController().navigate(R.id.action_authorizationFragment_to_homeFragment)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.status.collect {
+                when (it) {
+                    true -> findNavController().navigate(R.id.action_authorizationFragment_to_homeFragment)
+                    false -> Log.d("TAG", "status: $it")
+                }
             }
         }
     }
@@ -99,7 +94,10 @@ class AuthorizationFragment : Fragment() {
     }
 
     private fun updateIsLoading(isLoading: Boolean) = with(binding) {
-        Log.d("TAG", "updateIsLoading: $isLoading")
+        when (isLoading) {
+            true -> binding.progress.visibility = View.VISIBLE
+            false -> binding.progress.visibility = View.GONE
+        }
     }
 
     private fun handleAuthResponseIntent(intent: Intent) {

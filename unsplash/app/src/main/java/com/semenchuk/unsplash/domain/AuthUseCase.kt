@@ -12,4 +12,6 @@ class AuthUseCase(
     fun getAuthRepository() = authRepository
     fun getAuthService(application: Application) = authService
 
+
+
 }

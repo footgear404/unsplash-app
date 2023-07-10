@@ -60,5 +60,29 @@ class Mapper {
                 profileImage = profile.profileImage
             )
         }
+
+        fun savedProfileToProfileDto(profile: SavedProfile): ProfileDto {
+            return ProfileDto(
+                id = profile.id,
+                bio = profile.bio,
+                downloads = profile.downloads,
+                email = profile.email,
+                firstName = profile.firstName,
+                followedByUser = profile.followedByUser,
+                instagramUsername = profile.instagramUsername,
+                lastName = profile.lastName,
+                links = profile.links,
+                location = profile.location,
+                portfolioUrl = profile.portfolioUrl,
+                totalCollections = profile.totalCollections,
+                totalLikes = profile.totalLikes,
+                totalPhotos = profile.totalPhotos,
+                twitterUsername = profile.twitterUsername,
+                updatedAt = profile.updatedAt,
+                uploadsRemaining = profile.uploadsRemaining,
+                username = profile.username,
+                profileImage = profile.profileImage
+            )
+        }
     }
 }

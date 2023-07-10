@@ -2,8 +2,8 @@ package com.semenchuk.unsplash.data
 
 import android.util.Log
 import androidx.paging.*
-import com.semenchuk.unsplash.AUTH_STATUS
 import com.semenchuk.unsplash.app.App
+import com.semenchuk.unsplash.data.appAuth.AuthRepository.Companion.ACCESS_TOKEN
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
 import com.semenchuk.unsplash.data.retrofit.like.models.LikeResponse
 import com.semenchuk.unsplash.data.retrofit.photoById.models.DetailedPhoto
@@ -35,30 +35,30 @@ class UnsplashRepository(
     }
 
     suspend fun getPhotoById(id: String): Response<DetailedPhoto> {
-        return retrofitService.getPhotoById.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
+        return retrofitService.getPhotoById.send("Bearer ${sp.getString(ACCESS_TOKEN, null)}", id)
     }
 
     suspend fun addLike(id:String, likedByUser: Boolean): Response<LikeResponse> {
         val db = unsplashDatabaseDao.updateLike(id, likedByUser = !likedByUser)
         Log.d("DB", "addLike to db: ${!likedByUser} status-code($db)")
-        return retrofitService.likePhoto.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
+        return retrofitService.likePhoto.send("Bearer ${sp.getString(ACCESS_TOKEN, null)}", id)
     }
 
     suspend fun removeLike(id:String, likedByUser: Boolean): Response<LikeResponse> {
         val db = unsplashDatabaseDao.updateLike(id, likedByUser = !likedByUser)
         Log.d("DB", "removeLike from db: ${!likedByUser} status-code($db)")
-        return retrofitService.unLikePhoto.send("Bearer ${sp.getString(AUTH_STATUS, null)}", id)
+        return retrofitService.unLikePhoto.send("Bearer ${sp.getString(ACCESS_TOKEN, null)}", id)
     }
 
     suspend fun getUserProfile(): Response<ProfileDto> {
-        return retrofitService.userProfile.send("Bearer ${sp.getString(AUTH_STATUS, null)}")
+        return retrofitService.userProfile.send("Bearer ${sp.getString(ACCESS_TOKEN, null)}")
     }
 
-    suspend fun saveProfile(profile: SavedProfile) {
+    suspend fun saveUserProfile(profile: SavedProfile) {
         unsplashDatabaseDao.saveProfile(profile)
     }
 
-    suspend fun getFromDb(): List<SavedProfile> {
-        return unsplashDatabaseDao.getProfile()
+    suspend fun loadUserProfile(): SavedProfile {
+        return unsplashDatabaseDao.selectUserProfile()
     }
 }

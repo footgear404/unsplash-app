@@ -39,13 +39,13 @@ class ProfileFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.profile.collect {
-                Log.d("TAG", "onViewCreated: $it")
                 (activity as AppCompatActivity?)!!.supportActionBar!!.title = it?.username
                 binding.userName.text = it?.firstName + " " + it?.lastName
                 binding.nickname.text = "@" + it?.username
                 binding.location.text = it?.location
                 binding.email.text = it?.email
                 binding.authorDescription.text = it?.bio
+
                 GlideImageHelper()
                     .setPhoto(
                         context = requireContext(),

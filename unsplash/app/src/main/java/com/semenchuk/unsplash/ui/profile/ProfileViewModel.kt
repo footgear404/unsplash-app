@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.semenchuk.unsplash.data.retrofit.profile.models.ProfileDto
 import com.semenchuk.unsplash.domain.LoadUserProfileUseCase
+import com.semenchuk.unsplash.domain.utils.Mapper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -21,16 +22,11 @@ class ProfileViewModel(private val loadUserProfileUseCase: LoadUserProfileUseCas
     private fun getProfile() {
         viewModelScope.launch {
             try {
-//                val result = loadUserProfileUseCase.getProfile()
-//                val result = loadUserProfileUseCase.getProfile()
-                Log.d("DB", "getProfile: ${loadUserProfileUseCase.check()}")
-//                if (result.isSuccessful) {
-//                    _profile.value = result.body()
-//                } else {
-//                    Log.d("PROFILE", "getProfile: ${result.message()}")
-//                }
+                val result = loadUserProfileUseCase.loadProfile()
+                _profile.value = Mapper.savedProfileToProfileDto(result)
+                Log.d("DB", "getProfile: $result")
             } catch (e: Exception) {
-                Log.d("PROFILE", "getProfile: $e")
+                Log.d("PROFILE", "ERROR: $e")
             }
         }
     }

@@ -7,7 +7,6 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.semenchuk.unsplash.R
-import com.semenchuk.unsplash.data.appAuth.models.TokensModel
 import com.semenchuk.unsplash.domain.AuthUseCase
 import com.semenchuk.unsplash.domain.LoadUserProfileUseCase
 import kotlinx.coroutines.channels.Channel
@@ -29,25 +28,24 @@ class AuthViewModel(
     private val authRepository = authUseCase.getAuthRepository()
     private val authService: AuthorizationService = authUseCase.getAuthService(application)
 
-    private val openAuthPageEventChannel = Channel<Intent>(Channel.BUFFERED)
-    private val toastEventChannel = Channel<Int>(Channel.BUFFERED)
-    private val tokenChannel = Channel<TokensModel>(Channel.BUFFERED)
-    private val authSuccessEventChannel = Channel<Unit>(Channel.BUFFERED)
+    private val _openAuthPageEventChannel = Channel<Intent>(Channel.BUFFERED)
+    val openAuthPageEventChannel get() = _openAuthPageEventChannel.receiveAsFlow()
 
-    private val loadingMutableStateFlow = MutableStateFlow(false)
+    private val _toastEventChannel = Channel<Int>(Channel.BUFFERED)
+    val toastEventChannel get() = _toastEventChannel.receiveAsFlow()
 
-    val openAuthPageFlow get() = openAuthPageEventChannel.receiveAsFlow()
+    private val _authSuccessEventChannel = Channel<Unit>(Channel.BUFFERED)
+    val authSuccessEventChannel get() = _authSuccessEventChannel.receiveAsFlow()
 
-    val loadingFlow get() = loadingMutableStateFlow.asStateFlow()
+    private val _loadingMutableStateFlow = MutableStateFlow(false)
+    val loadingMutableStateFlow get() = _loadingMutableStateFlow.asStateFlow()
 
-    val authSuccessFlow get() = authSuccessEventChannel.receiveAsFlow()
+    private var _status = MutableStateFlow<Boolean>(false)
+    val status get() = _status.asStateFlow()
 
-    val authToastFlow get() = toastEventChannel.receiveAsFlow()
-
-    val token get() = tokenChannel.receiveAsFlow()
 
     fun onAuthCodeFailed(exception: AuthorizationException) {
-        toastEventChannel.trySendBlocking(R.string.auth_canceled)
+        _toastEventChannel.trySendBlocking(R.string.auth_canceled)
     }
 
     fun onAuthCodeReceived(tokenRequest: TokenRequest) {
@@ -55,19 +53,18 @@ class AuthViewModel(
         Log.d("TAG", "trySendBlocking: open: ${tokenRequest.authorizationCode}")
 
         viewModelScope.launch {
-            loadingMutableStateFlow.value = true
+            _loadingMutableStateFlow.value = true
             runCatching {
-                val token = authRepository.performTokenRequest(
+                authRepository.performTokenRequest(
                     authService = authService,
                     tokenRequest = tokenRequest
                 )
-                tokenChannel.send(token)
             }.onSuccess {
-                loadingMutableStateFlow.value = false
-                authSuccessEventChannel.send(Unit)
+                _loadingMutableStateFlow.value = false
+                _authSuccessEventChannel.send(Unit)
             }.onFailure {
-                loadingMutableStateFlow.value = false
-                toastEventChannel.send(R.string.auth_canceled)
+                _loadingMutableStateFlow.value = false
+                _toastEventChannel.send(R.string.auth_canceled)
             }
         }
     }
@@ -83,14 +80,15 @@ class AuthViewModel(
             authRequest,
             customTabsIntent
         )
-        openAuthPageEventChannel.trySendBlocking(openAuthPageIntent)
+        _openAuthPageEventChannel.trySendBlocking(openAuthPageIntent)
         Log.d("TAG", "openLoginPage (authRequest): ${authRequest.toUri()}")
     }
 
-    fun getProfile() {
+    fun saveProfileToDb() {
         viewModelScope.launch {
             try {
-                Log.d("PROFILE", "getProfile: ${loadUserProfileUseCase.getProfile().isSuccessful}")
+                loadUserProfileUseCase.saveProfile()
+                _status.value = true
             } catch (e: Exception) {
                 Log.d("PROFILE", "getProfile: $e")
             }

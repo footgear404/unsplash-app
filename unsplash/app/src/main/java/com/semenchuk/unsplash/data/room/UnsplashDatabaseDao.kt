@@ -24,7 +24,7 @@ interface UnsplashDatabaseDao {
     suspend fun saveProfile(profile: SavedProfile)
 
     @Query("SELECT * FROM saved_profile")
-    suspend fun getProfile(): List<SavedProfile>
+    suspend fun selectUserProfile(): SavedProfile
 
     @Transaction
     suspend fun refresh(saved_photos: List<SavedPhotoEntity>) {
