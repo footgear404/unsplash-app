@@ -1,6 +1,7 @@
 **Приложение позволяет получить доступ к ресурсу Unspash используя oAuth авторизаци.**
 
-- Clan architecture (MVVM)
+- Clan architecture
+- MVVM
 - Kotlin
 - Dagger 2
 - Kotlin Corutines
