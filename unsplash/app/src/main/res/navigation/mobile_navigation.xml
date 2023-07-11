@@ -48,7 +48,13 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.semenchuk.unsplash.ui.profile.ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_splashFragment"
+            app:destination="@id/splashFragment"
+            app:popUpTo="@id/mobile_navigation"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/onBoardingFragment"
         android:name="com.semenchuk.unsplash.ui.onBoarding.OnBoardingFragment"

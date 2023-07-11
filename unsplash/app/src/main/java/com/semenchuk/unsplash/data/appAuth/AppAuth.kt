@@ -88,8 +88,8 @@ object AppAuth {
         const val SCOPE =
             "public read_user write_user read_photos write_photos write_likes write_followers read_collections write_collections"
 
-        const val CLIENT_ID = "VsTnOTMJnHb5AdjOEIfMO5I_fdoqojuc8LRdeSZJtTY"
-        const val CLIENT_SECRET = "v3T45a-rWI3-gNUoPJoqqpjAMtZzSSmtgVTE6QhmQuc"
+        const val CLIENT_ID = "qaKtejOGHbh1J4vsYULaVxQphZNW_HRUuW3hz7q9zmo"
+        const val CLIENT_SECRET = "aq_C_wEqaOcrNwlx0AXVEkx3dn1dYtaMHpTqztaS-UE"
         const val CALLBACK_URL = "com.semenchuk.unsplash://unsplash"
         const val LOGOUT_CALLBACK_URL = ""
     }

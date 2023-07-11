@@ -15,6 +15,8 @@ class ProfileViewModel(private val loadUserProfileUseCase: LoadUserProfileUseCas
     private var _profile = MutableStateFlow<ProfileDto?>(null)
     val profile get() = _profile.asStateFlow()
 
+    private var _isLogout = MutableStateFlow<Boolean>(false)
+    val isLogout get() = _isLogout.asStateFlow()
     init {
         getProfile()
     }
@@ -28,6 +30,13 @@ class ProfileViewModel(private val loadUserProfileUseCase: LoadUserProfileUseCas
             } catch (e: Exception) {
                 Log.d("PROFILE", "ERROR: $e")
             }
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            _isLogout.value = loadUserProfileUseCase.userLogout()
+            Log.d("LOGOUT", "logout: ${_isLogout.value}")
         }
     }
 

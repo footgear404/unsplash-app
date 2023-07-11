@@ -3,6 +3,7 @@ package com.semenchuk.unsplash.data
 import android.util.Log
 import androidx.paging.*
 import com.semenchuk.unsplash.app.App
+import com.semenchuk.unsplash.data.appAuth.AuthRepository
 import com.semenchuk.unsplash.data.appAuth.AuthRepository.Companion.ACCESS_TOKEN
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
 import com.semenchuk.unsplash.data.retrofit.like.models.LikeResponse
@@ -60,5 +61,19 @@ class UnsplashRepository(
 
     suspend fun loadUserProfile(): SavedProfile {
         return unsplashDatabaseDao.selectUserProfile()
+    }
+
+    suspend fun logout(): Boolean {
+        val result = unsplashDatabaseDao.logout()
+
+        val editor = sp.edit()
+        editor.putString(ACCESS_TOKEN, null)
+        editor.putString(AuthRepository.TOKEN_TYPE, null)
+        editor.putString(AuthRepository.TOKEN_SCOPE, null)
+        editor.apply()
+
+        Log.d("LOGOUT", "DB was cleared: $result")
+        Log.d("LOGOUT", "SP status: ${sp.all}")
+        return result
     }
 }

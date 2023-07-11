@@ -81,6 +81,7 @@ class AuthViewModel(
             customTabsIntent
         )
         _openAuthPageEventChannel.trySendBlocking(openAuthPageIntent)
+
         Log.d("TAG", "openLoginPage (authRequest): ${authRequest.toUri()}")
     }
 

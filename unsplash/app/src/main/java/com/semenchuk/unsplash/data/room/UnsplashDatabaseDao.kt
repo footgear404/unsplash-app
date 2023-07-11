@@ -15,7 +15,10 @@ interface UnsplashDatabaseDao {
     suspend fun save(saved_photos: List<SavedPhotoEntity>)
 
     @Query("DELETE FROM saved_photo")
-    suspend fun clear()
+    suspend fun clearPhotos(): Int
+
+    @Query("DELETE FROM saved_profile")
+    suspend fun clearProfile(): Int
 
     @Query("UPDATE saved_photo SET likedByUser = :likedByUser WHERE id = :id")
     suspend fun updateLike(id: String, likedByUser: Boolean): Int
@@ -28,7 +31,11 @@ interface UnsplashDatabaseDao {
 
     @Transaction
     suspend fun refresh(saved_photos: List<SavedPhotoEntity>) {
-        clear()
+        clearPhotos()
         save(saved_photos)
+    }
+    @Transaction
+    suspend fun logout(): Boolean {
+        return clearPhotos() + clearProfile() > 0
     }
 }

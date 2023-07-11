@@ -16,4 +16,8 @@ class LoadUserProfileUseCase(private val unsplashRepository: UnsplashRepository)
     suspend fun loadProfile(): SavedProfile {
         return unsplashRepository.loadUserProfile()
     }
+
+    suspend fun userLogout(): Boolean {
+        return unsplashRepository.logout()
+    }
 }

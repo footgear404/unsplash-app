@@ -8,30 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.semenchuk.unsplash.AUTH_STATUS
-import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.R
+import com.semenchuk.unsplash.app.App
+import com.semenchuk.unsplash.data.appAuth.AuthRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SplashFragment : Fragment() {
 
     private var isAuthorized: Boolean? = null
-//    private var _getPrefs: SharedPreferences? = null
-//    private val getPrefs get() = _getPrefs!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        _getPrefs = requireActivity().applicationContext.getSharedPreferences(
-//            "appPrefs",
-//            Context.MODE_PRIVATE
-//        )
-//        isAuthorized = getPrefs.getString(AUTH_STATUS, null) != null
-
-        val sp = App.appComponent.sharedPrefs()
-        isAuthorized = sp.getString(AUTH_STATUS, null) != null
-    }
-
+    private val sp = App.appComponent.sharedPrefs()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,10 +27,10 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        Log.d("TAG", "isAuthorized launch: $isAuthorized")
 
-        println(isAuthorized)
+        isAuthorized = sp.getString(AuthRepository.ACCESS_TOKEN, null) != null
+
+        Log.d("TAG", "isAuthorized launch: $isAuthorized")
 
         viewLifecycleOwner.lifecycleScope.launch {
             delay(1500)

@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.databinding.FragmentProfileBinding
@@ -38,6 +39,15 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.isLogout.collect {
+                when (it) {
+                    true -> findNavController().navigate(R.id.action_profileFragment_to_splashFragment)
+                    false -> Log.d("LOGOUT", "logout $it")
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.profile.collect {
                 (activity as AppCompatActivity?)!!.supportActionBar!!.title = it?.username
                 binding.userName.text = it?.firstName + " " + it?.lastName
@@ -59,6 +69,7 @@ class ProfileFragment : Fragment() {
         setMenu()
     }
 
+
     private fun setMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {}
@@ -68,7 +79,8 @@ class ProfileFragment : Fragment() {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                Log.d("TAG", "onMenuItemSelected: ")
+                Log.d("CLICK", "Logout clicked")
+                viewModel.logout()
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)

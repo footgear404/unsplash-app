@@ -1,12 +1,11 @@
 package com.semenchuk.unsplash.data.room.photos
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
-import com.semenchuk.unsplash.AUTH_STATUS
 import com.semenchuk.unsplash.app.App
+import com.semenchuk.unsplash.data.appAuth.AuthRepository.Companion.ACCESS_TOKEN
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
 import com.semenchuk.unsplash.domain.utils.Mapper
@@ -35,8 +34,6 @@ class SavedPhotosRemoteMediator(
             getPageIndex(loadType) ?: return MediatorResult.Success(endOfPaginationReached = true)
 
         val limit = state.config.pageSize
-
-        Log.d("TAG", "getPageIndex: $pageIndex")
 //        Log.d("TAG", "limit: $limit")
 
         return try {
@@ -63,10 +60,9 @@ class SavedPhotosRemoteMediator(
     }
 
     private suspend fun fetchPhotos(page: Int, query: String): List<SavedPhotoEntity>? {
-        Log.d("TAG", "fetchPhotos(query): $query")
         if (query.isEmpty()) {
             val response = retrofitService.getPhotos.send(
-                authHeader = "Bearer ${sp.getString(AUTH_STATUS, null)}",
+                authHeader = "Bearer ${sp.getString(ACCESS_TOKEN, null)}",
                 page = page,
                 per_page = PAGE_SIZE
             )
@@ -74,7 +70,7 @@ class SavedPhotosRemoteMediator(
         } else {
 //            Log.d("TAG", "fetchPhotos: $query")
             val response = retrofitService.searchPhotos.send(
-                authHeader = "Bearer ${sp.getString(AUTH_STATUS, null)}",
+                authHeader = "Bearer ${sp.getString(ACCESS_TOKEN, null)}",
                 query = query,
                 page = page,
                 per_page = PAGE_SIZE
@@ -85,7 +81,6 @@ class SavedPhotosRemoteMediator(
     }
 
     private fun getPageIndex(loadType: LoadType): Int? {
-        Log.d("TAG", "loadType: $loadType")
         pageIndex = when (loadType) {
             LoadType.REFRESH -> FIRST_PAGE
             LoadType.PREPEND -> return null

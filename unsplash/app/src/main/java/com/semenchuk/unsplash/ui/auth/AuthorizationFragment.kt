@@ -28,8 +28,6 @@ class AuthorizationFragment : Fragment() {
 
     //    private var _getPrefs: SharedPreferences? = null
 //    private val getPrefs get() = _getPrefs!!
-    private val sp = App.appComponent.sharedPrefs()
-
 
     private val getAuthResponse =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -68,6 +66,7 @@ class AuthorizationFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.openAuthPageEventChannel.collect {
+                Log.d("TAG", "Intent: ${it.data}")
                 openAuthPage(it)
             }
         }
