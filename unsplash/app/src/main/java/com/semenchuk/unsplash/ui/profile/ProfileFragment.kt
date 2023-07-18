@@ -23,6 +23,8 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
+//    private val pagedAdapter = SavedPhotoPagedAdapter()
+
     private val viewModel: ProfileViewModel by viewModels { App.appComponent.profileViewModelFactory() }
 
     override fun onCreateView(
@@ -50,17 +52,17 @@ class ProfileFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.profile.collect {
                 (activity as AppCompatActivity?)!!.supportActionBar!!.title = it?.username
-                binding.userName.text = it?.firstName + " " + it?.lastName
-                binding.nickname.text = "@" + it?.username
-                binding.location.text = it?.location
-                binding.email.text = it?.email
-                binding.authorDescription.text = it?.bio
+                binding.profile.userName.text = it?.firstName + " " + it?.lastName
+                binding.profile.nickname.text = "@" + it?.username
+                binding.profile.location.text = it?.location
+                binding.profile.email.text = it?.email
+                binding.profile.authorDescription.text = it?.bio
 
                 GlideImageHelper()
                     .setPhoto(
                         context = requireContext(),
                         img_url = it?.profileImage?.large,
-                        into = binding.authorProfileImg,
+                        into = binding.profile.authorProfileImg,
                         blurHash = ""
                     )
             }

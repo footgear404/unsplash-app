@@ -3,6 +3,7 @@ package com.semenchuk.unsplash.ui.home.paged_adapter
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
 import com.semenchuk.unsplash.databinding.TopOfDayItemBinding
+import com.semenchuk.unsplash.utils.BaseViewHolder
 import com.semenchuk.unsplash.utils.GlideImageHelper
 
 class TopOfDayViewHolder(

@@ -26,7 +26,7 @@ class AuthViewModel(
 ) : AndroidViewModel(application) {
 
     private val authRepository = authUseCase.getAuthRepository()
-    private val authService: AuthorizationService = authUseCase.getAuthService(application)
+    private val authService: AuthorizationService = authUseCase.getAuthService()
 
     private val _openAuthPageEventChannel = Channel<Intent>(Channel.BUFFERED)
     val openAuthPageEventChannel get() = _openAuthPageEventChannel.receiveAsFlow()
@@ -40,7 +40,7 @@ class AuthViewModel(
     private val _loadingMutableStateFlow = MutableStateFlow(false)
     val loadingMutableStateFlow get() = _loadingMutableStateFlow.asStateFlow()
 
-    private var _status = MutableStateFlow<Boolean>(false)
+    private var _status = MutableStateFlow(false)
     val status get() = _status.asStateFlow()
 
 

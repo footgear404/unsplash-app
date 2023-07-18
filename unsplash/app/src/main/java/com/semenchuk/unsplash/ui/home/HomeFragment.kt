@@ -24,7 +24,7 @@ import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
 import com.semenchuk.unsplash.databinding.FragmentHomeBinding
 import com.semenchuk.unsplash.domain.utils.State
-import com.semenchuk.unsplash.ui.home.paged_adapter.UnsplashPagedAdapter
+import com.semenchuk.unsplash.ui.home.paged_adapter.HomePagedAdapter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val pagedAdapter = UnsplashPagedAdapter(
+    private val pagedAdapter = HomePagedAdapter(
             photoClickListener = { item -> onPhotoClick(item) },
             likeClickListener = { item, position -> onLikeClick(item, position) }
         )
@@ -86,7 +86,7 @@ class HomeFragment : Fragment() {
                 when (state) {
                     State.Loading -> {
                         binding.swipeToRefresh.isRefreshing = true
-                        viewModel.sendMessageInSnack(this@HomeFragment.getString(R.string.searching))
+//                        viewModel.sendMessageInSnack(this@HomeFragment.getString(R.string.searching))
                     }
                     State.Success -> {
                         viewModel.photos.onEach {

@@ -8,6 +8,7 @@ import androidx.room.Room
 import com.semenchuk.unsplash.data.UnsplashRepository
 import com.semenchuk.unsplash.data.appAuth.AuthRepository
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
+import com.semenchuk.unsplash.data.retrofit.collections.CollectionPagingSource
 import com.semenchuk.unsplash.data.room.RoomRepository
 import com.semenchuk.unsplash.data.room.UnsplashDatabase
 import com.semenchuk.unsplash.data.room.UnsplashDatabaseDao
@@ -83,5 +84,10 @@ class DataModule {
         retrofitService: RetrofitService
     ): UnsplashRepository {
         return UnsplashRepository(unsplashDatabaseDao, retrofitService)
+    }
+
+    @Provides
+    fun provideCollectionPagingSource(unsplashRepository: UnsplashRepository): CollectionPagingSource {
+        return CollectionPagingSource(unsplashRepository)
     }
 }

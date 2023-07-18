@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/collectionsFragment"
         android:name="com.semenchuk.unsplash.ui.collections.CollectionsFragment"
-        android:label="fragment_favorite"
+        android:label="@string/collections"
         tools:layout="@layout/fragment_collections" />
     <fragment
         android:id="@+id/profileFragment"

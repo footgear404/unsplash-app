@@ -64,5 +64,6 @@
     <string name="error">Something went wrong</string>
     <string name="thx_message_permissions">Tnks! Try download now</string>
     <string name="sry_message_permissions">Sry, we not have permissions</string>
+    <string name="photos_count">%1$s photos</string>
 
 </resources>

@@ -6,6 +6,7 @@ import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.data.appAuth.AuthRepository
 import com.semenchuk.unsplash.data.appAuth.AuthRepository.Companion.ACCESS_TOKEN
 import com.semenchuk.unsplash.data.retrofit.RetrofitService
+import com.semenchuk.unsplash.data.retrofit.collections.models.CollectionsItem
 import com.semenchuk.unsplash.data.retrofit.like.models.LikeResponse
 import com.semenchuk.unsplash.data.retrofit.photoById.models.DetailedPhoto
 import com.semenchuk.unsplash.data.retrofit.profile.models.ProfileDto
@@ -24,7 +25,8 @@ class UnsplashRepository(
     private val sp = App.appComponent.sharedPrefs()
 
     fun pagerForFeed(query: String): Pager<Int, SavedPhotoEntity> {
-        val savedPhotosRemoteMediator = SavedPhotosRemoteMediator(unsplashDatabaseDao, retrofitService, query)
+        val savedPhotosRemoteMediator =
+            SavedPhotosRemoteMediator(unsplashDatabaseDao, retrofitService, query)
         return Pager(
             config = PagingConfig(pageSize = 20),
             remoteMediator = savedPhotosRemoteMediator,
@@ -39,13 +41,13 @@ class UnsplashRepository(
         return retrofitService.getPhotoById.send("Bearer ${sp.getString(ACCESS_TOKEN, null)}", id)
     }
 
-    suspend fun addLike(id:String, likedByUser: Boolean): Response<LikeResponse> {
+    suspend fun addLike(id: String, likedByUser: Boolean): Response<LikeResponse> {
         val db = unsplashDatabaseDao.updateLike(id, likedByUser = !likedByUser)
         Log.d("DB", "addLike to db: ${!likedByUser} status-code($db)")
         return retrofitService.likePhoto.send("Bearer ${sp.getString(ACCESS_TOKEN, null)}", id)
     }
 
-    suspend fun removeLike(id:String, likedByUser: Boolean): Response<LikeResponse> {
+    suspend fun removeLike(id: String, likedByUser: Boolean): Response<LikeResponse> {
         val db = unsplashDatabaseDao.updateLike(id, likedByUser = !likedByUser)
         Log.d("DB", "removeLike from db: ${!likedByUser} status-code($db)")
         return retrofitService.unLikePhoto.send("Bearer ${sp.getString(ACCESS_TOKEN, null)}", id)
@@ -53,6 +55,13 @@ class UnsplashRepository(
 
     suspend fun getUserProfile(): Response<ProfileDto> {
         return retrofitService.userProfile.send("Bearer ${sp.getString(ACCESS_TOKEN, null)}")
+    }
+
+    suspend fun getCollections(page: Int): Response<List<CollectionsItem>> {
+        return retrofitService.collections.send(
+            "Bearer ${sp.getString(ACCESS_TOKEN, null)}",
+            page = page
+        )
     }
 
     suspend fun saveUserProfile(profile: SavedProfile) {

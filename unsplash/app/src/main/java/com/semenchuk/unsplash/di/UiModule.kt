@@ -2,10 +2,13 @@ package com.semenchuk.unsplash.di
 
 import android.app.Application
 import com.semenchuk.unsplash.domain.AuthUseCase
+import com.semenchuk.unsplash.domain.LoadCollectionsUseCase
 import com.semenchuk.unsplash.domain.LoadPhotosUseCase
 import com.semenchuk.unsplash.domain.LoadUserProfileUseCase
 import com.semenchuk.unsplash.ui.auth.AuthViewModel
 import com.semenchuk.unsplash.ui.auth.AuthViewModelFactory
+import com.semenchuk.unsplash.ui.collections.CollectionViewModelFactory
+import com.semenchuk.unsplash.ui.collections.CollectionsViewModel
 import com.semenchuk.unsplash.ui.detailedPhoto.DetailedPhotosViewModel
 import com.semenchuk.unsplash.ui.detailedPhoto.DetailedPhotosViewModelFactory
 import com.semenchuk.unsplash.ui.home.HomeViewModel
@@ -73,6 +76,17 @@ class UiModule {
     ): AuthViewModelFactory {
         return AuthViewModelFactory(application, authUseCase, loadUserProfileUseCase)
     }
+
+    @Provides
+    fun provideLoadCollectionsViewModel(loadCollectionsUseCase: LoadCollectionsUseCase): CollectionsViewModel {
+        return CollectionsViewModel(loadCollectionsUseCase)
+    }
+
+    @Provides
+    fun provideLoadCollectionsViewModelFactory(loadCollectionsUseCase: LoadCollectionsUseCase): CollectionViewModelFactory {
+        return CollectionViewModelFactory(loadCollectionsUseCase)
+    }
+
 
 }
 

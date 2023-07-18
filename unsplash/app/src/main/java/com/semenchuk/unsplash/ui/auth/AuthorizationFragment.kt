@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.app.App
 import com.semenchuk.unsplash.databinding.FragmentAuthorizationBinding
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
@@ -81,7 +82,11 @@ class AuthorizationFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.status.collect {
                 when (it) {
-                    true -> findNavController().navigate(R.id.action_authorizationFragment_to_homeFragment)
+                    true -> {
+                        binding.progress.visibility = View.GONE
+                        delay(500)
+                        findNavController().navigate(R.id.action_authorizationFragment_to_homeFragment)
+                    }
                     false -> Log.d("TAG", "status: $it")
                 }
             }
@@ -95,7 +100,7 @@ class AuthorizationFragment : Fragment() {
     private fun updateIsLoading(isLoading: Boolean) = with(binding) {
         when (isLoading) {
             true -> binding.progress.visibility = View.VISIBLE
-            false -> binding.progress.visibility = View.GONE
+            false -> {}
         }
     }
 

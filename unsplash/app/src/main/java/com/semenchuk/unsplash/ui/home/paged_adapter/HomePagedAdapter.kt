@@ -3,16 +3,17 @@ package com.semenchuk.unsplash.ui.home.paged_adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.semenchuk.unsplash.R
 import com.semenchuk.unsplash.data.retrofit.like.models.Photo
 import com.semenchuk.unsplash.data.room.photos.SavedPhotoEntity
 import com.semenchuk.unsplash.databinding.PhotoListItemBinding
 import com.semenchuk.unsplash.databinding.TopOfDayItemBinding
+import com.semenchuk.unsplash.utils.BaseViewHolder
+import com.semenchuk.unsplash.utils.PhotosDiffUtilCallback
 
 
-class UnsplashPagedAdapter(
+class HomePagedAdapter(
     private val photoClickListener: (SavedPhotoEntity) -> Unit,
     private val likeClickListener: (SavedPhotoEntity, Int) -> Unit
 ) : PagingDataAdapter<SavedPhotoEntity, BaseViewHolder<Any>>(PhotosDiffUtilCallback()) {
@@ -26,7 +27,6 @@ class UnsplashPagedAdapter(
         if (item != null) holder.bind(item)
 
         setFullWithForFirstHolder(holder, position)
-
     }
 
     override fun onBindViewHolder(
@@ -84,16 +84,4 @@ class UnsplashPagedAdapter(
         const val TOP_OF_DAY: Int = R.layout.top_of_day_item
         const val PHOTO_LIST: Int = R.layout.photo_list_item
     }
-}
-
-class PhotosDiffUtilCallback : DiffUtil.ItemCallback<SavedPhotoEntity>() {
-    override fun areItemsTheSame(
-        oldItem: SavedPhotoEntity,
-        newItem: SavedPhotoEntity
-    ): Boolean = oldItem.id == newItem.id
-
-    override fun areContentsTheSame(
-        oldItem: SavedPhotoEntity,
-        newItem: SavedPhotoEntity
-    ): Boolean = oldItem == newItem
 }

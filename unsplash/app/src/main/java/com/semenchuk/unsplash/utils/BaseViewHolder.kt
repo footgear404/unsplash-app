@@ -1,4 +1,4 @@
-package com.semenchuk.unsplash.ui.home.paged_adapter
+package com.semenchuk.unsplash.utils
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
