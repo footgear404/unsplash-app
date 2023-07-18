@@ -59,7 +59,7 @@
         android:id="@+id/onBoardingFragment"
         android:name="com.semenchuk.unsplash.ui.onBoarding.OnBoardingFragment"
         android:label="fragment_on_boarding"
-        tools:layout="@layout/fragment_on_boarding" >
+        tools:layout="@layout/fragme![](C:/Users/footg/OneDrive/Рабочий стол/5.png)![](C:/Users/footg/OneDrive/Рабочий стол/4.png)nt_on_boarding" >
         <action
             android:id="@+id/action_onBoardingFragment_to_authorizationFragment"
             app:destination="@id/authorizationFragment"
